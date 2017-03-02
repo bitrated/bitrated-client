@@ -1,0 +1,116 @@
+.bitrating
+  display inline-block
+  position relative
+  text-align center
+  width 2.2em
+  margin-left 0.2em
+  font-size 0.7em
+  line-height normal
+  //vertical-align middle
+  top -0.15em
+
+  &, &:hover, &:focus
+    text-decoration none
+
+  &:before
+    position absolute
+    top -0.14em
+    left 0
+    content '⬡'
+    font-size 2.5em
+    font-weight 100
+
+  &.bitrank--1
+    color #d15010 !important
+  &.bitrank-0
+    color #c0c0c0 !important
+  &.bitrank-1
+    color #d1a110 !important
+  &.bitrank-2
+    color #d1ca10 !important
+  &.bitrank-3, &.bitrank-4
+    color #a6d110 !important
+  &.bitrank-5
+    color #3ebb41 !important
+
+  span
+    font-weight bold
+    vertical-align middle
+    display inline-block
+  &.c3 span
+    font-size 0.8em
+  &.c4 span
+    font-size 0.7em
+    letter-spacing -0.5px
+    // font-weight 600
+
+.bitrating-tooltip
+  .tooltip-inner
+    background #7A6592
+
+  &.top .tooltip-arrow
+    border-top-color #7A6592
+
+  .user-metrics
+    margin 10px 4px
+
+    a
+      color #fff
+
+// Various hacks for fixing the Bitrating hexagon position 
+// Ugly, but works for now. @shame.css
+
+// Target Safari 7.1-8 (via CSS hack)
+@css {_::-webkit-full-page-media, _:future, :root .bitrating:before { top: -0.25em !important }}
+
+// Target Safari 7 (via JavaScript, with FLOC)
+.safari7 .bitrating:before
+  top -0.25em !important
+
+// Target Chrome < 37 on Windows, which has a GDI-based font rendering (37+ switched to DirectWrite)
+.chrome-gdi .bitrating:before
+  top -0.25em !important
+
+// Target Firefox on Windows (via CSS hack, Firefox 4+)
+@media screen and (-moz-windows-theme)
+  .bitrating:before
+    margin-top -0.2em
+  .user-list .bitrating:before
+    margin-top -0.24em
+
+// Target Firefox on Mac (via CSS hack, Firefox 25+)
+@supports (-moz-osx-font-smoothing:auto)
+  .bitrating:before
+    margin-top -0.03em
+
+    .profile .banner &
+      margin-top -0.07em
+    .feed-item .media-body .heading &
+      margin-top -0.02em
+    .trade-sidebar &
+      margin-top -0.04em
+    .explore &
+      margin-top -0.02em
+    .user-list &
+      margin-top -0.1em
+
+// Target iOS 10 devices (iPhone 6, iPhone 6 Plus, iPad Air, iPad Mini 2)
+.ios10
+  .bitrating:before
+    margin-top -0.15em
+  // .explore .bitrating:before
+  //   margin-top -0.15em
+  .user-list .bitrating:before
+    margin-top -0.2em
+  // .feed-item .media-body .heading .bitrating:before
+  //   margin-top -0.15em
+  .profile .banner .bitrating:before
+    margin-top -0.18em
+  // .trade-sidebar .bitrating:before
+  //   margin-top -0.15em
+
+.ios7
+  .bitrating:before
+    margin-top -0.17em
+  .user-list .bitrating:before
+    margin-top -0.18em

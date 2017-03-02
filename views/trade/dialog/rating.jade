@@ -1,0 +1,31 @@
+.modal.fade.rating-dialog.dialog-button-near: .modal-dialog: .modal-content
+  form(action='//')
+    .modal-header
+      button.close(type='button', data-dismiss='modal', aria-hidden='true') &times;
+      h4.modal-title Review #{ target }
+
+    .modal-body
+      label How was your experience with #{ target }?
+      .row.rating-values
+        - rating_values = [ -6, -3, 2, 5 ]
+        - rating_labels = { '-6': 'Terrible', '-3': 'Meh', '2': 'Good', '5': 'Awesome!' }
+        for value in rating_values
+          label.col-xs-6.col-md-3(for='rating-'+value)
+            .rating-icon(data-rating=value)
+            input(type='radio', value=value, name='value', id='rating-'+value, required, checked=rating.value==value)
+            = ' ' + rating_labels[value]
+
+      .form-group
+        textarea#comment.form-control(name='comment', placeholder='Additional comments (optional)', maxlength=2000, autofocus=!!trade)
+          = rating.comment
+
+      if !trade
+        .bs-callout.bs-callout-warning: small
+          :markdown
+            This is meant for adding reviews to trades that were made outside of Bitrated.
+            If you made the trade via the Bitrated payment system, add the review via the trade page instead.
+            **It carries more weight than reviews made here**.
+
+    .modal-footer
+      button.btn.btn-default.btn-lg(type='button', data-dismiss='modal') Cancel
+      button.btn.btn-brand.btn-lg(type='submit') Review #{ target }

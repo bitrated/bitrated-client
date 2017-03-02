@@ -1,0 +1,40 @@
+extend ../layout
+
+append vars
+  - page_title = 'Trade: ' + trade.description
+  - active_menu = '/trade'
+  - await_js = true
+  - include_header = true
+
+prepend css
+  +css('lib/sui/step.min.css')
+
+append css
+  +css('trade.css')
+
+block page-header
+  .trade-header.clearfix
+    .desc
+      h1= trade.description
+      h4= get_other_rel(perspective.role)
+        = ' '
+        if perspective.role == 'arbiter'
+          | !{ user_link(trade.buyer) } and !{ user_link(trade.seller) }
+        else
+          | !{user_link(perspective.other_user)} for #{format_amount(trade.amount)}
+
+    include ../inc/steps
+
+block content
+  .trade(data-trade=trade, data-active-ratings=active_ratings)
+    .row
+      .col-md-9.col-lg-9
+        .trade-body
+          .trade-content
+            block trade-content
+          //-include inc/add-ratings
+      .trade-sidebar.col-md-3.col-lg-3
+        include inc/sidebar
+        h4 Activity Log
+        .trade-log
+          include inc/log

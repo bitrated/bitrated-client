@@ -1,0 +1,24 @@
+include ../mixin/rate
+
+.modal.fade: .modal-dialog: .modal-content
+  .modal-header
+    button.close(type='button', data-dismiss='modal', aria-hidden='true') &times;
+    h4.modal-title= title
+  
+  .modal-body
+    p= content
+    //- if txr.final_txid
+      p.text-muted.small.break Transaction ID: #{ txr.final_txid }
+    if Object.keys(active_ratings).length < 2
+      p Please take a moment to review the users you transacted with. It's only a click away!
+      .dialog-reviews
+        ul
+          li: strong Add User Reviews:
+          for role in [ 'buyer', 'seller', 'arbiter' ]
+            - rate_target = trade[role]
+            if rate_target != authenticated
+              li #[label= rate_target]
+                +rate(rate_target, active_ratings)
+    
+  .modal-footer
+    button.btn.btn-primary(type='button', data-dismiss='modal') Continue

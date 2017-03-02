@@ -1,0 +1,43 @@
+//- Awaiting approval from other parties
+if trade.status == 'new'
+  - pending_html = connect_and(pending_accept.map(user_link))
+  :markdown
+    ### Awaiting approval
+
+    This trade is awaiting to be accepted by !{ pending_html }.
+
+    You'll be notified once the trade is accepted by all parties.
+
+//- Trade was rejected
+if trade.status == 'rejected'
+  :markdown
+    ### Trade rejected
+
+    This trade was rejected by !{ user_link(trade.rejected_by) }
+    and is now canceled.
+
+  if rejection_msg
+    p The following rejection message was provided:
+    blockquote.user-text!= markdown(rejection_msg)
+
+//- Payment was already released
+if trade.status == 'released'
+  :markdown
+    ### Payment released
+
+  mixin tx_info(tx, inline)
+    - short_txid = tx.final_txid.substr(0, 16)+'...'
+    | #{ inline ? 't' : 'T' }ransaction #[a.break(data-ntxid=tx.ntxid, target='_blank')= short_txid]
+    | , authorized !{reltime(tx.finalized_at)} by !{ user_link(tx.created_by) } and !{ user_link(tx.finalized_by) }.
+
+  - finalized_txs = trade.txs.filter(function(tx){ return !!tx.finalized_by })
+  if finalized_txs.length > 1
+    p This trade is completed. The funds were released in:
+    ul
+      each tx in finalized_txs
+        li: +tx_info(tx, false)
+  else
+    p This trade is completed. The funds were released in
+      = ' '
+      +tx_info(finalized_txs[0], true)
+

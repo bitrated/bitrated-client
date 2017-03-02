@@ -1,0 +1,26 @@
+.welcome
+  button.close(type='button', title='Hide message', data-action='hide-welcome') &times;
+  h2 Welcome to your new Bitrated profile!
+  p.lead Below are some first steps to complete your profile and start building your reputation:
+
+  .row
+    a.col-md-4.link-accounts(href='/connect')
+      h3 Link your accounts
+      p Leverage your existing online persona to bootstrap your reputation on Bitrated.
+    a.col-md-4.get-vouched(data-toggle='modal', data-target='#get-vouched')
+      h3 Get vouched
+      p Ask the people who trust you to vouch for your credibility on Bitrated's web-of-trust network.
+    a.col-md-4.complete-profile(href='/settings')
+      h3 Complete your profile
+      p Setup your profile information to tell more about yourself to other users.
+
+  //- .well
+    :markdown
+      Want to offer arbitration services? Setup your [trust agent settings](/settings/agent) to get listed on the marketplace
+      and start earning fees.
+
+      For more information, visit our [FAQ page](/faq).
+      If you have any questions or feedback, we would love to [hear from you](/contact)!
+
+
+include vouch-dialog

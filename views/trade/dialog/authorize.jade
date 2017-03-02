@@ -1,0 +1,29 @@
+extend tx
+
+append vars
+  - title = 'Authorize transaction'
+
+prepend body
+  if finalizing
+    p The following transaction was sent for approval by <strong>#{ requested_by }</strong>:
+  else
+    p You requested to initiate the following transaction:
+
+append body
+  form(action='//')
+    .form-group
+      label(for='password') To authorize, enter your 2FA password:
+      .input-group
+        input.form-control(type='text', name='password', required, autofocus, placeholder='The password you provided during the signup process')
+        .input-group-btn: button.btn.btn-brand(type='submit') Authorize
+    .help-block
+      if finalizing
+        :markdown
+          Authorizing this transaction will sign it with your key
+          and broadcast it to the network.
+      else
+        :markdown
+          Authorizing this transaction will sign it with your key
+          and send it to the other parties for final approval.
+      :markdown
+        **This cannot be undone**. Please double-check before authorizing transactions.

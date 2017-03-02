@@ -1,0 +1,23 @@
+.modal.fade.dispute-dialog.dialog-button-near: .modal-dialog: .modal-content
+  form(action='//')
+    .modal-header
+      button.close(type='button', data-dismiss='modal', aria-hidden='true') &times;
+      h4.modal-title Open dispute
+    
+    .modal-body
+      .form-group
+        label.sr-only(for='dispute-message') Dispute message (required)
+        textarea#dispute-message.form-control(name='message', placeholder='Please enter any relevant information for the dispute. This will be visible to the trust agent and to the other party.', rows=5, maxlength=10000, required, autofocus)
+      .help-block.notes
+        if dispute_fee != '0'
+          :markdown
+            Once you start a dispute, an additional dispute handling fee of **#{ format_amount(dispute_fee) }**
+            will be charged by the trust agent.
+            This cannot be undone.
+        else
+          :markdown
+            The trust agent does *not* charge additional fees for handling disputes.
+      .clearfix: .pull-right
+        button.btn.btn-default(type='button', data-dismiss='modal') Cancel
+        = ' '
+        button.btn.btn-primary(type='submit') Open dispute

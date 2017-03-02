@@ -1,0 +1,164 @@
+- txs_to = { buyer: find_txr_to(trade.buyer), seller: find_txr_to(trade.seller) }
+
+mixin release_btn(role)
+  if txs_to[role]
+    - verb = (role == 'buyer' ? 'Refunded' : 'Released')
+    button.btn.btn-xl(data-tx-to=role, disabled=true)&attributes(attributes)
+      span.glyphicon.glyphicon-ok
+      = ' '
+      | #{ verb } to #{ trade[role] }
+  else
+    - verb = (role == 'buyer' ? 'Refund' : 'Release')
+    button.btn.btn-xl(data-tx-to=role)&attributes(attributes)
+      | #{ verb } to #{ trade[role] }
+  = ' '
+
+.release
+  :markdown
+    ### Release funds
+    The multi-signature address <strong class="break">#{ trade.multisig }</strong>
+    has a balance of **#{ format_amount(balances.confirmed) }**.
+
+  //-
+    h4.text-muted Confirmed balance: 
+      strong(data-balance-type='confirmed')= format_amount(balances.confirmed)
+    if balances.unconfirmed
+      h4.text-muted Unconfirmed balance: 
+        strong(data-balance-type='unconfirmed')= format_amount(balances.unconfirmed)
+
+  if trade.disputed
+    p This trade was disputed by !{ trade.disputed_by == authenticated? 'you' : user_link(trade.disputed_by) }
+      if !txs_to.buyer && !txs_to.seller
+        |  and is awaiting !{ trade.arbiter == authenticated? 'your resolution' : 'resolution by the trust agent' }
+      | . #[a(data-toggle='modal', data-target='#'+dispute_log_id) Show the dispute message].
+
+  if perspective.role == 'seller' || perspective.role == 'buyer'
+    - accept_tx = txs_to[perspective.role]
+    - send_tx = txs_to[perspective.other_role]
+
+    if accept_tx
+      :markdown
+        The funds were released to you by !{ user_link(accept_tx.created_by) }.
+        To finalize the transaction and receive the funds,
+        click "Accept funds" below:
+
+    else if send_tx
+      - sender = send_tx.created_by == authenticated ? 'You' : user_link(send_tx.created_by)
+      :markdown
+        !{ sender } released the funds to !{ user_link(perspective.other_user) }.
+        The transaction will be finalized once !{ user_link(perspective.other_user) } accepts it.
+
+    else if !trade.disputed
+      if perspective.role == 'seller'
+        :markdown
+          The buyer can release the funds once he's satisfied with the trade.
+          If he's not, you can issue a refund below, or start a dispute.
+
+      else if perspective.role == 'buyer'
+        :markdown
+          Once you're satisfied with the trade, you can release the funds to the seller below.
+          If you're not satisfied, you can ask the seller to issue a refund,
+          or open a dispute.
+
+    .controls
+      if accept_tx
+        if !accept_tx.finalized_by
+          button.btn.btn-xl.btn-success(data-ntxid=accept_tx.ntxid) Accept funds
+        else
+          button.btn.btn-xl.btn-success(disabled) Funds accepted
+        = ' '
+
+      if !(accept_tx && accept_tx.finalized_by)
+        +release_btn(perspective.other_role).btn-primary
+
+      if !(txs_to.buyer || txs_to.seller)
+        if !trade.disputed
+          button.btn.btn-xl.btn-danger(data-action='dispute') Open dispute
+        else
+          button.btn.btn-xl.btn-danger(disabled) Trade disputed
+
+      //-button.btn.btn-default Custom transaction
+
+  else if perspective.role == 'arbiter'
+    if trade.disputed
+      :markdown
+        After investigating the case,
+        you can issue a refund to the buyer
+        or release it to the seller.
+      .control
+        +release_btn('buyer').btn-primary
+        +release_btn('seller').btn-brand
+    else
+      :markdown
+        This trade was not disputed.
+        You'll be notified if the buyer and seller require your dispute resolution services.
+
+//- Until custom transactions is implemented, this list is really of no value...
+//- if trade.txs.length && (perspective.role != 'arbiter' || trade.disputed)
+  .tx-requests
+    h3 Transaction requests
+
+    table.table.table-hover
+      thead: tr
+        th Created
+        th Sent by
+        //- th Type
+        th Status
+        th
+      tbody
+        for tx in trade.txs
+          tr
+            td!= reltime(tx.created_at)
+            td= tx.created_by
+            //-td
+              if !tx.paying_to
+                | Custom transaction
+              else if tx.paying_to == trade.buyer
+                | Refund to #{ tx.paying_to }
+              else
+                | Release to #{ tx.paying_to }
+            td
+              if !tx.finalized_by
+                | Awaiting approval
+              else
+                | Finalized by #{ tx.finalized_by } at 
+                a(href=tx_link(tx.final_txid), target='_blank') #{ tx.final_txid.substr(0, 7) }&hellip;
+            td
+              button.btn.btn-default.btn-xs(data-ntxid=tx.ntxid)
+                if authenticated != tx.created_by && !tx.finalized_by
+                  | Review
+                else
+                  | Show
+
+
+
+    //-h4 Send request 
+     small Create a transaction request.
+
+    //-form.tx-builder(action='//')
+      .input-group
+        input.form-control(type='text', name='address', required, placeholder='Destination address')
+        .input-group-btn
+          button.btn.btn-primary(type='button') Send request
+    
+    
+    //- form(role='tx-builder', action='//')
+      .outputs
+        .output.form-group.form-inline
+          
+          button.btn.btn-default(role='add', tabindex=-1): span.glyphicon.glyphicon-plus
+          .form-group
+            input.form-control.address(type='text', name='address', required, placeholder='Destination address')
+          .form-group: .input-group.amount
+            input.form-control(type='text', name='amount', required, pattern='\\d+(\\.\\d{1,8})?',
+              placeholder='Amount')
+            .input-group-addon.currency BTC
+            //.input-group-addon: .btn-group
+              button.btn.dropdown-toggle(data-toggle='dropdown'): span.caret
+              ul.dropdown-menu(role='menu')
+                li: a(role='pay-remaining', title="(minus fees)", href='#') Pay all remaining
+                li: a(role='pay-some', href='#') Pay % of total
+
+      .clearfix.submit
+        button.btn.btn-primary(type='button') Send request
+        p.text-muted (Change: <strong class="change">#{ format_amount(balances.confirmed) }</strong>)

@@ -1,0 +1,36 @@
+extend ../../layout
+
+append vars
+  - page_title = 'Link Keybase account'
+  - include_header = true
+
+block page-header
+  h1 Link Keybase account
+
+block content
+  .container-narrow
+    if error
+      .bs-callout.bs-callout-danger= error
+
+    form(method='post')
+      +csrf
+
+      //- First step - enter username
+      if !kb_user
+        .form-group
+          label(for='username') Keybase username
+          input#username.form-control(type='text', name='username', required, autofocus)
+        button.btn.btn-primary.btn-lg(type='submit') Continue
+
+      //- Seconds step - sign message
+      if kb_user
+        input(type='hidden', name='username', value=kb_user)
+        :markdown
+          To link your Keybase account, please
+          [sign the following message](https://keybase.io/sign) (in its *exact* form, no extra spaces or newlines)
+          using the key associated with **keybase.io/#{ kb_user }** (*#{ fingerprint }*).
+        pre= message
+        .form-group
+          label(for='sig') Signature
+          textarea#sig.form-control.input-md(name='sig', required, autofocus, rows=6, placeholder='-----BEGIN PGP SIGNED MESSAGE-----')
+        button.btn.btn-primary.btn-lg(type='submit') Authenticate

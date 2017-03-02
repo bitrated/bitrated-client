@@ -1,0 +1,60 @@
+extend layout
+include mixin/metrics
+
+append vars
+  - page_title = 'Explore'
+  - active_menu = '/explore'
+  - include_header = true
+  - full_content = true
+
+append css
+  +css('user/explore.css')
+
+block page-header
+  h1 Explore Bitrated
+
+  if !authenticated
+    .intro
+      p Bitrated allows you to manage your online reputation and helps protect you against fraud.
+      p Join us today to explore our features and discover the safe side of Bitcoin.
+    a.btn.btn-primary.btn-lg(href='/join') Join Bitrated
+    = ' '
+    a.btn.btn-default.btn-lg(href='/faq') Learn more
+
+mixin users_list(users, type, chunk_size)
+  - chunk_size || (chunk_size=6)
+  .carousel.slide(id=type, data-interval='')
+    .carousel-inner
+      - for (var i=0; i<users.length; i+=chunk_size)
+        .item(class=i==0?'active':null): .row
+          - for (var j=i; j<users.length && j<i+chunk_size; j++)
+            - u = users[j]
+            .col-lg-4.col-sm-6: .user.media
+              a.thumb.media-left(href=user_url(u.username))
+                img(src=user_image(u.username, 'thumb'), alt=u.username)
+              .media-body
+                h3.media-heading.clearfix
+                  a(href=user_url(u.username), title=u.username)= u.username
+                  +score(u.username, u.scores)
+                p= u.title
+                +user_metrics(u, 'small')
+    a.left.carousel-control(href='#'+type, role='button', data-slide='prev')
+    a.right.carousel-control(href='#'+type, role='button', data-slide='next')
+
+block content
+  .explore
+    section.agents: .container
+      .clearfix
+        h2.pull-left Top trust agents
+        a.pull-right.btn.btn-brand(href='/agents') All agents
+      +users_list(arbiters, 'agents')
+    section.top-users: .container
+      .clearfix
+        h2.pull-left Most reputable users
+        a.pull-right.btn.btn-brand(href='/users') All users
+      +users_list(users, 'top-users')
+    section.find-user: .container
+      form(method='get', action='/users')
+        label(for='user-q') Find user by name:
+        input.form-control.input-lg#user-q(type='text', name='q')
+        button.btn.btn-brand.btn-lg(type='submit') Find

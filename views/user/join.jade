@@ -1,0 +1,77 @@
+extend layout
+
+append vars
+  - page_title = 'Join'
+  - active_menu = '/join'
+  - await_js = true
+  - bundle = 'user/join'
+  - req_modern_browser = true
+  - include_header = true
+
+append css
+  +css('user/join.css')
+
+block page-header
+  .clearfix
+    .pull-left
+      h1 Join Bitrated
+      p Claim your username and start building your reputation.
+    h4.pull-right.hidden-xs.hidden-sm Already a member?
+      = ' '
+      a(href='/login') Login
+
+block content
+  .container-narrow
+
+    form(action='//')
+      - prefilled = {}
+      if invite
+        - prefilled.email = invite.email
+        input(type='hidden', name='invite_token', value=invite.token)
+        :markdown
+          ### #{ invite.trade.created_by } invited you to a trade
+          You were invited to join the trade "**#{ invite.trade.description }**"
+          by **!{ user_link(invite.trade.created_by) }**.
+          To proceed, please create an account below.
+
+          First time here? Visit [our homepage](/) to learn more.
+
+      if upgrade
+        - prefilled.username = upgrade.user.username
+        - prefilled.email = upgrade.user.email
+        input(type='hidden', name='upgrade_token', value=upgrade.token)
+        :markdown
+          #### Welcome to Bitrated v2, #{ upgrade.user.username }!
+
+          To upgrade your account from Bitrated v1, please enter your account information below:
+
+      .form-group
+        label(for='username') Username
+        input#username.form-control.input-lg(type='text', name='username', placeholder='3-15 alphanumeric characters (0-9, a-z, A-Z)',
+                                             required, pattern='[a-zA-Z0-9]{3,15}', autofocus=!prefilled.username,
+                                             value=prefilled.username, readonly=!!prefilled.username)
+      .form-group
+        label(for='email') Email
+        input#email.form-control.input-lg(type='email', name='email', required, placeholder='user@mydomain.com',
+                                          value=prefilled.email, readonly=!!invite, autofocus=!!(prefilled.username && !prefilled.email))
+
+      .form-group
+        label(for='password') Password (2FA)
+        input#password.form-control.input-lg(type='text', name='password', required, placeholder='at least 8 characters', pattern='.{8,}',
+                                             autofocus=!!(prefilled.username && prefilled.email))
+        //- .input-group
+          span.input-group-btn: button.gen-pass.btn.btn-default(type='button') Generate
+        p.help-block Used as a second-factor password to access funds and authorize transactions. 
+                   | We'll provide you with a separate password for logging in to your account.
+
+      p.legacy-agent-notice.bs-callout.bs-callout-warning.
+        Trying to access your #[strong.username] account from the legacy release of Bitrated?
+        Please follow the upgrade procedure 
+        #[a(href='https://bitrated.uservoice.com/knowledgebase/articles/502555-how-to-upgrade-my-account-from-the-old-system') described here].
+
+      button.btn.btn-primary.btn-xl(type='submit') Join Bitrated
+
+      .text-muted.notes
+        :markdown
+          By joining Bitrated, you agree to our [terms of service](/tos).
+

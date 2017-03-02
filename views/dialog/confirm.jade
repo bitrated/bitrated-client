@@ -1,0 +1,11 @@
+.modal.fade: .modal-dialog: .modal-content
+  .modal-header
+    button.close(type='button', data-dismiss='modal', aria-hidden='true') &times;
+    if title
+      h4.modal-title= title
+  
+  .modal-body= message
+  
+  .modal-footer
+    button.btn.btn-primary.confirm(type='submit')= confirm_text || 'Confirm'
+    button.btn.btn-default(type='button', data-dismiss='modal')= cancel_text || 'Cancel'

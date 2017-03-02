@@ -1,0 +1,36 @@
+extend layout
+include ../mixin/pager
+
+append vars
+  - page_title = 'Vouch'
+  - active_user_menu = 'vouch'
+  - meta_desc = 'Trust ' + user.username + '? Vouch for them on Bitrated and help build their reputation.'
+  - meta_image = large_meta_image
+
+block user-content
+
+  if !authenticated
+    :markdown
+      ### Vouch for #{ user.username }
+
+      Your first time here? Bitrated is a trust platform that provides a reputation management system,
+      multi-signature smart contracts for buyer protection,
+      and fraud prevention mechanisms.
+      [Visit our homepage](/) to learn more.
+
+      If you trust #{ user.username } and wish to vouch for their credibility, please join Bitrated or login to your account:
+
+    a.btn.btn-brand.btn-lg(href='/join') Join Bitrated
+    = ' '
+    a.btn.btn-default.btn-lg(href='/login?return='+current_uri) Login
+
+  else if authenticated == user.username
+    h3 Vouch for #{ user.username }
+    p You cannot vouch for yourself.
+
+  else if wot.trusts_directly
+    h3 Vouch for #{ user.username }
+    p You already vouched for #{ user.username }.
+
+  else
+    include inc/vouch

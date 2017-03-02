@@ -1,0 +1,25 @@
+mixin user_metric(type, active, name, url, amount)
+  - plural = attributes.plural || 's'
+  - klass = [ attributes.class||name+plural, active==name?'active':null ]
+  - if (amount == 1) plural = ''
+  - label = attributes.label || name
+  - title = type == 'small' ? amount + ' ' + (attributes.tooltip || label) + plural : null
+  if type == 'small' && attributes.details
+    - title += ', ' + attributes.details
+
+  li(class=klass, title=title)
+    a(href=url)
+      span.num= amount
+      if type=='big'
+        = ' '
+        span.caption #{label}#{plural}
+
+mixin user_metrics(user, type, active)
+  - url = user_url(user.username)
+  - scores = user.scores
+  - totals = scores.totals
+  ul.user-metrics.clearfix(class=type)&attributes(attributes)
+    block
+    +user_metric(type, active, 'review', url+'/reviews', totals.reviews)(details=scores.percent_positive&&scores.percent_positive+'% positive')
+    +user_metric(type, active, 'vouch', url+'/vouches', totals.vouches)(plural='es')
+    +user_metric(type, active, 'linked', url+'/linked', totals.linked).linked(label='account', tooltip='linked account')

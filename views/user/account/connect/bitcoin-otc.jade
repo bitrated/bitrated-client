@@ -1,0 +1,35 @@
+extend ../../layout
+
+append vars
+  - page_title = 'Link #bitcoin-otc account'
+  - include_header = true
+
+block page-header
+  h1 Link #bitcoin-otc account
+
+block content
+  .container-narrow
+    if error
+      .bs-callout.bs-callout-danger= error
+
+    form(method='post')
+      +csrf
+
+      //- First step - enter username
+      if !botc_username
+        .form-group
+          label(for='username') #bitcoin-otc username
+          input#username.form-control(type='text', name='username', required, autofocus)
+        button.btn.btn-primary.btn-lg(type='submit') Continue
+
+      //- Seconds step - sign message
+      if botc_username
+        input(type='hidden', name='username', value=botc_username)
+        :markdown
+          Please sign the following message (in its *exact* form, no extra spaces or newlines) using your #bitcoin-otc
+          account *#{botc_username}* with the signing address *#{address}*:
+        pre= message
+        .form-group
+          label(for='sig') Signature
+          input#sig.form-control.input-lg(type='text', name='sig', required, autofocus)
+        button.btn.btn-primary.btn-lg(type='submit') Authenticate

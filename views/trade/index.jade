@@ -1,0 +1,68 @@
+extend layout
+include mixin/pager
+
+append vars
+  - page_title = 'Trades'
+  - active_menu = '/trade'
+  - include_header = true
+
+append css
+  +css('trade/list.css')
+
+block page-header
+  h1 Your trades
+
+block content
+  .trades-list
+    if trades.length || searching
+
+      .clearfix.controls
+        a.btn.btn-primary(href='trade/new') New trade
+        include inc/search
+
+      if !trades.length
+        h3 No trades matched your search.
+        p Try modifying your search parameters to get more results.
+      else
+        .table-responsive: table.table.table-striped.table-hover
+          thead: tr
+            th Created
+            th User
+            th Description
+            th Amount
+            th Status
+            th
+          tbody
+            each trade in trades
+              - perspective = get_perspective(trade)
+              - action = get_applicable_action(trade)
+              if trade.status == 'new'
+                - status_comment = 'Awaiting approval by '+connect_and(get_pending_accept(trade))
+              else if trade.status == 'rejected'
+                - status_comment = 'Rejected by '+trade.rejected_by
+              else if trade.status == 'accepted'
+                - status_comment = 'Awaiting payment by ' + trade.buyer
+              else if trade.status == 'paid'
+                - status_comment = 'Funds secured in multisig'
+              else if trade.status == 'released'
+                - status_comment = 'Funds released'
+              tr
+                td!= reltime(trade.created_at)
+                td= get_other_rel(perspective.role) + ' '
+                  if perspective.role == 'arbiter'
+                    | !{user_link(trade.buyer)} and !{user_link(trade.seller)}
+                  else
+                    != user_link(perspective.other_user)
+                td= trade.description
+                td= trade_amount(trade)
+                td
+                  if status_comment
+                    abbr(title=status_comment)= get_status_label(trade.status)
+                  else
+                    = get_status_label(trade.status)
+                td
+                  a.btn.btn-default.btn-xs(href='trade/'+trade.id)= action ? get_action_label(action) : 'Show'
+        +pager(page, pages)
+    else
+      p You have no trades yet. Would you like to create one?
+      a.btn.btn-primary(href='trade/new') Create your first trade  

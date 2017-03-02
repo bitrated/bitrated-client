@@ -1,0 +1,125 @@
+include mixin/helpers
+include mixin/score
+
+mixin menu_item(path, anchor)
+  li
+    a(href=path, class=(active_menu == path || current_path == path ? 'active': ''))&attributes(attributes)= anchor
+    block
+
+block vars
+  - page_title = null
+  - page_title_suffix = 'Bitrated'
+  - active_menu = null
+  - await_js = false
+  - full_content = false
+  - is_cached = false
+  - req_modern_browser = false
+  - bundle = authenticated ? 'auth' : 'guest'
+  - prefetch = []
+  - page_tour = null
+  - large_meta_image = static_base_url+'/share/lg.png'
+  - small_meta_image = static_base_url+'/share/sm.png'
+  - meta_image = large_meta_image
+  - meta_desc = 'Bitcoin Trust Platform - Identity & reputation management, multi-signature smart contracts and consumer protection for Bitcoin and other cryptocurrencies.'
+
+mixin script_block
+  block scripts
+    +js('libs.js')
+    //- if page_tour
+    //-   +js('tour/loader.js')(async, data-page-tour=page_tour)
+    if authenticated
+      +js('lprimus.min.js')
+    if bundle
+      +js(bundle+'.js')
+
+- full_title = (page_title || '') + ((page_title_suffix && page_title) ? ' › ' : '') + (page_title_suffix || '')
+doctype html
+html
+  head
+    block head
+      meta(charset='utf-8')
+      title= full_title
+      base(href=url)
+      meta(http-equiv='X-UA-Compatible', content='IE=edge,chrome=1')
+      meta(name='viewport', content='width=device-width, initial-scale=1.0')
+      meta(name='apple-mobile-web-app-capable', content='yes')
+      unless is_cached && !authenticated
+        //- prevent cache tokens from getting cached
+        meta(name='csrf-token', content=csrf_token)
+      if authenticated
+        meta(name='authenticated', content=authenticated)
+
+      meta(name='description', content=meta_desc)
+      meta(itemprop='image', content=meta_image)
+      meta(property='og:image', content=meta_image)
+      meta(property='og:site_name', content='Bitrated')
+      meta(property='og:description', content=meta_desc)
+      meta(property='fb:app_id', content='727691027287815')
+
+      meta(name='twitter:card', content=meta_image==large_meta_image?'summary_large_image':'summary')
+      meta(name='twitter:site', content='@bitrated')
+      meta(name='twitter:title', content=full_title)
+      meta(name='twitter:description', content=meta_desc)
+
+      block css
+        if env == 'production'
+          +css('sw.css')
+        else
+          +css('libs.css')
+          +css('common.css')
+      each resource in prefetch
+        link(rel='prefetch', href=static_url+'/'+resource)
+        link(rel='prerender', href=static_url+'/'+resource)
+  body(role='document')
+    +js('browser.js')(async)
+    nav.navbar.navbar-inverse.navbar-fixed-top(role='navigation')
+      .container
+        .navbar-header
+          button.navbar-toggle(type='button', data-toggle='collapse', data-target='#navbar-collapse')
+            span.sr-only Toggle navigation
+            | #[span.icon-bar] #[span.icon-bar] #[span.icon-bar]
+          a.navbar-brand(href='/') Bitrated
+        .collapse.navbar-collapse#navbar-collapse
+          ul.nav.navbar-nav.navbar-left
+            +menu_item('/explore', 'Explore')
+            +menu_item('/faq', 'FAQ')
+            +menu_item('/docs', 'API')
+          ul.nav.navbar-nav.navbar-right
+            if authenticated
+              li.notifications.dropdown
+                a(href='#', data-toggle='dropdown')
+                  | #[span.glyphicon.glyphicon-bell] #[span.badge.unread-count]
+                ul.dropdown-menu
+              +menu_item('/trade', 'Trades')
+              +menu_item('/settings', 'Settings')
+              +menu_item('/'+authenticated, authenticated).auth
+              +menu_item('/logout?_csrf='+csrf_token, 'Logout')
+            else
+              +menu_item('/join', 'Join Bitrated').highlight
+              +menu_item('/login', 'Login').highlight
+    if req_modern_browser
+        include inc/browser-support
+    if include_header
+      .page-header: .container
+        block page-header
+    if await_js
+      +script_block
+    .content(role='main', class=(full_content?'':'container'))
+      block content
+    footer: .container
+      ul.list-inline.pull-left
+        li.text-muted &copy; 2017 Bitrated Ltd.
+        li: a(href='about') About
+        //-li: a(href='support') Support
+        li: a(href='tos') Terms
+        li: a(href='tos#privacy') Privacy
+        li: a(href='contact') Contact
+        //-li: a(href='http://blog.bitrated.com/') Blog
+      ul.list-inline.pull-right
+        li: a(href='security') Security
+        li: a(href='bounty', target='_blank') Bug Bounty
+        li: a(href='docs') Developers
+        li: a(href='https://bitrated.uservoice.com/', target='_blank') Feedback
+    if !await_js
+      +script_block
+    noscript: img(src='/s')

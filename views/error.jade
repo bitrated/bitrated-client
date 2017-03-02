@@ -1,0 +1,26 @@
+extend layout
+
+append vars
+  - page_title = 'Error'
+  - include_header = true
+  - is_user_error = err.status && err.status >= 400 && err.status < 500
+
+block page-header
+  if !is_user_error
+    h2 Whoops! Something bad happened.
+  else
+    h2= err.message
+
+block content
+  if !is_user_error
+    :markdown
+      This incident was logged and will be handled by our team.
+
+      If you keep seeing this, please [contact us](/contact) and provide us with relevant information
+      and the version number *#{ version }*.
+  else
+    :markdown
+      If you believe you should not be seeing this error, please [contact us](/contact) and provide us
+      with the relevant information and the version number *#{ version }*.
+
+  a.btn.btn-primary(href='/') Back to homepage

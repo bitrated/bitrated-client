@@ -1,0 +1,62 @@
+include ../../mixin/rate
+
+h4 Trade details
+
+- users_info = locals.users_info || {}
+
+mixin user(role)
+  - username = trade[role]
+  | #[+user_email(username)] !{ user_link(username) } #[+score(username, user_scores[role])]
+
+mixin user_email(username)
+  - info = users_info[username]
+  if username != authenticated && info && info.email
+    a(href="mailto:#{info.email}", title=info.email): span.glyphicon.glyphicon-envelope
+
+ul.props
+  li #[label Buyer:] #[+user('buyer')]
+  li #[label Seller:] #[+user('seller')]
+  li #[label Trust agent:] #[+user('arbiter')]
+
+  li #[label Amount:] #{ format_amount(trade.amount) }
+  li #[label Agent fee:] #{ format_amount(trade.arb_fees.base) }
+    if trade.arb_fees.dispute && trade.arb_fees.dispute != '0'
+      small <br>+ #{ format_amount(trade.arb_fees.dispute) } if disputed
+  //-li #[label Miner fee:] #{ format_amount(trade.meta.miner_fee || 10000) }
+  li #[label Created:] !{ reltime(trade.created_at) }
+    | <br>by !{ user_link(trade.created_by) }
+
+  //-li #[label Status:] #{ get_status_label(trade.status) }
+  if trade.contract && !exclude_sidebar_contract
+    li #[label Contract:] #[a(href='#contract') View]
+
+if can_rate
+  h4 Add reviews
+  ul.props
+    for role in [ 'buyer', 'seller', 'arbiter' ]
+      - rate_target = trade[role]
+      if rate_target != authenticated
+        li #[label= rate_target]
+          +rate(rate_target, active_ratings)
+
+//-if trade.multisig
+  hr
+  h4= trade.multisig
+  dl.dl-horizontal    
+    dt Confirmed:
+    dd(data-balance-type='confirmed')= format_amount(balances.confirmed)
+
+    dt Unconfirmed:
+    dd(data-balance-type='unconfirmed')= format_amount(balances.unconfirmed)
+
+    //- TODO: Move this to an helper function someplace else
+    if trade.currency == 'BTC'
+      - history_url = 'https://blockchain.info/address/' + trade.multisig
+      - history_source = 'blockchain.info'
+    if trade.currency == 'BTC-TEST'
+      - history_url = 'http://test.webbtc.com/address/' + trade.multisig
+      - history_source = 'webbtc'
+      //- Some alternatives: tbtc.blockr.io, test.insight.is, biteasy.com/testnet
+
+    dt Transactions:
+    dd: a(href=history_url, target='_blank') View on #{ history_source }

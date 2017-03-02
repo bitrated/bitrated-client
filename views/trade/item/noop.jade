@@ -1,0 +1,9 @@
+extend layout
+
+append vars
+  - bundle = 'trade/noop'
+  if trade.status == 'new'
+    - prefetch.push('trade/payment.js', 'trade/payment.css')
+
+block trade-content
+  include content/noop

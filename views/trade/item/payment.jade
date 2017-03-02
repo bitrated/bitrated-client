@@ -1,0 +1,12 @@
+extend layout
+
+append vars
+  - await_js = true
+  - bundle = 'trade/payment'
+  - prefetch.push('trade/release.js', 'trade/release.css')
+
+append css
+  +css('trade/payment.css')
+    
+block trade-content
+  include content/payment

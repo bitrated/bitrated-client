@@ -1,0 +1,19 @@
+extend ../layout
+
+mixin account_menu_item(path, anchor)
+  li(class=(active_account_menu == path ? 'active': '')): a(href=path)= anchor
+
+append vars
+  - active_menu = '/settings'
+  - active_account_menu = null
+
+block content
+  .row.account-page
+    .col-md-3.menu
+      ul.nav.nav-pills.nav-stacked.well
+        li: h4 Your account
+        +account_menu_item('/settings', 'Settings')
+        +account_menu_item('/connect', 'Link accounts')
+        +account_menu_item('/settings/agent', 'Trust agent settings')
+    .col-md-9
+      block account-content

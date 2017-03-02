@@ -1,0 +1,8 @@
+mixin pager(page, pages)
+  if pages > 1
+    ul.pager
+      if page > 1
+        li.previous: a(href=paging_uri(page-1)) Previous
+      li Page #{page} of #{pages}
+      if page < pages
+        li.next: a(href=paging_uri(page+1)) Next

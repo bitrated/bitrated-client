@@ -1,0 +1,32 @@
+extend ../layout
+include ../../mixin/linked
+
+append vars
+  - page_title = 'Unlink accounts'
+  - active_user_menu = 'linked'
+  - bundle = 'user/linked/unlink'
+  - await_js = true
+
+block user-content
+  h4.tab-title Remove linked accounts
+
+  if removed_now
+    .bs-callout.bs-callout-info
+      :markdown
+        Your **#{ removed_now }** account was successfully unlinked from your Bitrated identity.
+
+  if linked.length
+    p: strong Pick an account to unlink:
+    ul.row.linked-accounts
+      for account in linked
+        li.col-md-4.col-sm-6.remove-acc(data-provider=account.provider, data-provider-id=account.provider_id)
+          +linked_account(account, { custom_controls: true, tooltip: 'Click to unlink this account.', url: '#', icon_class: 'noco' })
+            span.glyphicon.glyphicon-remove.pull-right
+
+  else
+    p #{ user.username } has no linked accounts.
+
+  .controls
+    a.btn.btn-brand(href='/connect') Link more accounts &#8250;
+    =' '
+    a.btn.btn-default(href=url+'/linked') View accounts &#8250;

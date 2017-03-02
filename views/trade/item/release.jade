@@ -1,0 +1,11 @@
+extend layout
+
+append vars
+  - bundle = 'trade/release'
+  - prefetch.push('trade/noop.js')
+
+append css
+  +css('trade/release.css')
+
+block trade-content
+  include content/release

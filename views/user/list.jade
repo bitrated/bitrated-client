@@ -1,0 +1,55 @@
+extend layout
+
+include mixin/pager
+include mixin/metrics
+include mixin/arb-fees
+
+append vars
+  - is_arbiter = query.role == 'arbiter'
+  - page_title = is_arbiter ? 'Trust Agents' : 'Users'
+  - active_menu = '/users'
+  - include_header = true
+
+append css
+  +css('user/list.css')
+
+block page-header
+  .clearfix(class=is_arbiter?'has-desc':null)
+    .pull-left
+      h1= is_arbiter ? 'Trust Agents' : 'Bitrated users'
+        if query.tag
+          = ' '
+          small tagged with "#{ query.tag }"
+      if is_arbiter
+        p Bitrated's marketplace for arbitration services.
+
+    form.search-controls(method='get')
+      if query.role
+        input(type='hidden', name='role', value=query.role)
+      .input-group
+        input.form-control(type='text', name='q', value=query.q, placeholder='Search '+(is_arbiter?'trust agents':'users'))
+        span.input-group-btn
+          button.btn(type='submit'): span.glyphicon.glyphicon-search
+
+block content
+  .user-list
+    if !users.length
+      p Your search did not match any results.
+
+    for user in users
+      .user.row
+        .col-lg-1.col-sm-2.col-xs-3.thumb: a(href=user_url(user.username)): img(src=user_image(user.username, 'thumb'), alt=user.username)
+        .col-sm-2.col-xs-6: h3: a(href=user_url(user.username), title=user.username)= user.username
+        .col-sm-1.col-xs-3.score: +score(user.username, user.scores)
+        .col-lg-6.col-sm-4.col-xs-12.desc(class=(user.full_name||user.title)&&is_arbiter?'twoliner':null)
+          if user.full_name || user.title
+            p.title(title=user.title)
+              if user.full_name
+                strong= user.full_name
+                = user.title && ' - '
+              = user.title
+          if is_arbiter && user.arbitration_fees && user.arbitration_fees.base
+            p.fees #[strong Fees:] #[+fees_text(user.arbitration_fees, true)]
+        .col-lg-2.col-sm-3.col-xs-12.metrics: +user_metrics(user, 'small')
+
+    +pager(page, pages)

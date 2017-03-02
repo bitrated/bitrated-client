@@ -1,0 +1,44 @@
+extend layout
+
+append vars
+  - page_title = 'Login'
+  - active_menu = '/login'
+  - await_js = true
+  - bundle = 'user/login'
+  - include_header = true
+  - req_modern_browser = true
+
+block page-header
+  .clearfix
+    h1.pull-left Login
+    h4.pull-right New user? #[a(href='/join') Join us]
+
+block content
+  .container-narrow
+    form(action='//', method='post')
+      if return_to
+        input(type='hidden', name='return', value=return_to)
+        .bs-callout.bs-callout-warning
+          :markdown
+            The page you were trying to access requires a Bitrated account.
+            [Don't have an account yet?](/join)
+
+      .form-group
+        label(for='username') Username
+        input#username.form-control.input-lg(type='text', name='username', placeholder='Your username',
+                                    required, pattern='[a-zA-Z0-9]{3,15}', autofocus)
+
+      .form-group
+        label(for='seed') Mnemonic passphrase
+        input#seed.form-control.input-lg(type='text', name='seed', placeholder='Your 16 words passphrase', required)
+        p.help-block The passphrase you recieved during the signup process.
+
+      //-.form-group
+        label(for='remember') Remember me
+        select#remember.form-control.input-lg(name='remember')
+          option(value=0) Until I close my browser
+          option(value=1) for 1 day
+          option(value=2, selected) for 30 days
+          option(value=3) forever
+
+      button.btn.btn-primary.btn-xxl(type='submit') Login

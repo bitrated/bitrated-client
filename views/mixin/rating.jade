@@ -1,0 +1,35 @@
+include score
+
+
+mixin rating(rating, opt)
+  - role_labels = { buyer: 'buyer', seller: 'seller', arbiter: 'trust agent' }
+  - verb_text = { review: 'reviewed', vouch: 'vouched for' }
+  - opt = opt || {}
+  - rater_scores = rating.rater_scores || opt.rater_scores
+  .media.feed-item.rating-item(class='rating-'+rating.type)
+    .media-left
+      a.thumb(href=user_url(rating.rater))
+        img(src=user_image(rating.rater, 'thumb'))
+    .media-body
+      .heading.clearfix
+        h2!= user_link(rating.rater)
+          if !opt.hide_score_of || opt.hide_score_of != rating.rater
+            +score(rating.rater, rater_scores, true)
+          = ' '
+          small= verb_text[rating.type]
+          = ' '
+          != user_link(rating.target)
+        != reltime(rating.created_at)
+
+      if rating.type == 'review'
+        .rating-icon.rating-icon-small(data-rating=rating.value)
+
+      if rating.comment
+        .user-text!= markdown(rating.comment)
+
+      if rating.type == 'review'
+        if !rating.trade
+          p.text-muted This review is not attached to a Bitrated trade.
+        else
+          p.text-muted Trade with !{user_link(rating.target)} as the #{role_labels[rating.target_role]} and !{user_link(rating.rater)} as the #{role_labels[rating.rater_role]}.
+

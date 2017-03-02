@@ -1,0 +1,8 @@
+if can_rate
+  h4 Add ratings
+  dl.dl-horizontal.add-ratings
+    for rate_user in perspective.other_users
+      dt #{ get_role(rate_user, trade) }:
+      dd(data-rate=rate_user): a(href='#')
+        span.rated-icon.glyphicon.glyphicon-ok-circle
+        |  Rate #{ rate_user }

@@ -1,0 +1,11 @@
+extend layout
+
+block content
+  h2 #{ trade.created_by } invited you to a Bitrated trade
+
+  p You were invited by !{ user_link(trade.created_by) } to join the trade: #[strong= trade.description].
+  p To create your Bitrated account and review the trade request, click below:
+
+  p: a.btn-primary(href=invite_url) Join Bitrated &amp; Review Trade
+
+  p Want to learn more about Bitrated? Visit us at #[a(href=URL) Bitrated.com].

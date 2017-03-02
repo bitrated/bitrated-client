@@ -1,0 +1,17 @@
+extend layout
+
+append vars
+  - page_title = 'Page not found'
+  - include_header = true
+
+block page-header
+  h1 Whoops! Page not found. #{ xyz }
+
+block content
+  :markdown
+    The page you're looking for cannot be found.
+
+    It looks like you stumbled upon an old or broken link.
+    If you think this page should exists, please [let us know about that](/contact).
+
+  a.btn.btn-primary(href='/') Back to homepage

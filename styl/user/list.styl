@@ -1,0 +1,97 @@
+// truncate long text with with ellipsis
+truncate()
+  overflow hidden
+  white-space nowrap
+  text-overflow ellipsis
+  
+
+.search-controls
+  float right
+  width 20em
+  margin-top 9px
+
+  .has-desc &
+    margin-top 26.5px
+
+@media (max-width:767px)
+  .page-header
+    .pull-left, .search-controls
+      float none !important
+
+    .search-controls
+      margin-top 15px
+
+.user
+  padding 15px 0
+  margin 0 0 10px 0
+  border-radius 8px
+  background #fff
+  // bugfix, probably related to .media's table display
+  width 100%
+
+  > div
+    height 55px
+    overflow hidden
+
+    @media (max-width:767px)
+      &.thumb
+        max-width 85px
+      &.score
+        float right
+      &.desc, &.metrics
+        height auto
+      &.desc
+        padding-top 10px
+        padding-bottom 10px
+
+
+  img
+    width 55px
+    height 55px
+
+  h3
+    line-height normal
+    margin 11px 0 0
+    truncate()
+    a
+      color inherit
+      &, &:hover, &:focus
+        text-decoration none
+
+  .bitrating
+    font-size 22px
+    margin 15px 0 0
+
+    &.c1 span, &.c2 span
+      margin-top -5px
+    &.c3 span, &.c4 span
+      margin-top -2px
+
+    @media (max-width:767px)
+      position absolute
+      right 15px
+
+  .desc
+    p
+      font-size 1.2em
+      color #aeaeae
+      margin 0
+
+    @media (max-width:767px)
+      p
+        font-size 16px
+    @media (min-width:768px)
+      p:first-child
+        margin-top 15.5px
+      p.title, p.fees
+        truncate()
+      &.twoliner p:first-child
+        margin-top 5px
+
+  .user-metrics
+    @media (min-width:768px)
+      margin 17.5px 0 0 0
+      position absolute
+      right 15px
+    @media (max-width:767px)
+      margin 0

@@ -1,0 +1,7 @@
+mixin rate(username, active_ratings)
+  - current = active_ratings[username] || {}
+  .rate.clearfix
+    ul
+      for value in [ -6, -3, 2, 5 ]
+        - is_active = (value == current.value)
+        li.rating-icon.rating-icon-small.rating-icon-greyscale(data-rate=username, data-rating=value, class=is_active?'active':null)

@@ -1,0 +1,9 @@
+extend layout
+include ../mixin/rating
+
+append vars
+  - page_title = ({review:'Review', vouch: 'Vouch'})[rating.type] + ' by ' + rating.rater
+  - active_user_menu = rating.type
+
+block user-content
+  +rating(rating)

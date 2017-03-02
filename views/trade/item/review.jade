@@ -1,0 +1,14 @@
+extend layout
+
+append vars
+  - exclude_sidebar_contract = true
+  - await_js = true
+  - req_modern_browser = true
+  - bundle = 'trade/review'
+  - prefetch.push('trade/noop.js', 'trade/payment.js', 'trade/payment.css')
+
+append css
+  +css('trade/review.css')
+
+block trade-content
+  include content/review

@@ -1,0 +1,41 @@
+
+mixin fees-group(kind)
+  - amount_pattern = '\\d+(\\.\\d{1,8})?'
+  - config = fees && fees[kind] || {}
+  - config.type || (config.type = kind == 'base' ? 'percentage' : 'none')
+  .form-inline.fees-kind(data-fees-kind=kind, class="fees-active-#{config.type}")
+    .form-group
+      label.sr-only Fees type
+      select.form-control(name="fees-type")
+        option(value='percentage', selected=config.type=='percentage') Percentage
+        option(value='fixed', selected=config.type=='fixed') Fixed price
+        option(value='none', selected=config.type=='none')= kind == 'base' ? 'Free of charge' : 'No additional cost'
+    = ' '
+    .fees-type.fees-type-percentage
+      .form-group
+        label.sr-only Percentage
+        .input-group
+          input.form-control.required-when-active(type='number', name='percentage', value=config.percentage,
+                                                  required=config.type=='percentage', step=0.01, min=0.01, max=100)
+          .input-group-addon %
+      = ' '
+      .form-group
+        label.sr-only Minimum fee
+        .input-group
+          input.form-control(type='text', name='min', size=4, placeholder='(none)',
+                             value=format_satoshis(config.min), pattern=amount_pattern)
+          .input-group-addon min
+      = ' '
+      .form-group
+        label.sr-only Maximum fee
+        .input-group
+          input.form-control(type='text', name='max', size=4, placeholder='(none)',
+                             value=format_satoshis(config.max), pattern=amount_pattern)
+          .input-group-addon max
+
+    .fees-type.fees-type-fixed
+      label.sr-only Fixed price
+      .input-group
+        input.form-control.required-when-active(type='text', name='fixed', size=4, value=format_satoshis(config.fixed),
+                                                required=config.type=='static', pattern=amount_pattern)
+        .input-group-addon BTC

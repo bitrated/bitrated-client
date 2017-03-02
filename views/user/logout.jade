@@ -1,0 +1,14 @@
+extend layout
+
+append vars
+  - page_title = 'Logout'
+  - bundle = 'user/logout'
+
+// replace entire scripts block and only load the logout script
+block scripts
+  +js(bundle+'.js')
+
+block content
+  .container-narrow
+    h1 Logout
+    p Please wait...

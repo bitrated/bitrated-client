@@ -1,0 +1,72 @@
+.trade-header .steps
+  margin-top 8.5px
+
+.new-trade
+  .tt-dropdown-menu
+    padding 0
+    margin-top 6px
+    border-radius 6px
+    border 1px solid #ccc
+
+  .tt-suggestion
+    min-height 56px
+    border-top 1px solid #ddd
+
+    .bitrating
+      color #999 !important
+      font-size 18px
+      top 16px
+    .score
+      float right
+      min-height 45px
+      margin-top -5px
+      &.has-desc
+        margin-top 4px
+    .title
+      margin 15px 0 0
+      font-size 1.2em
+
+      .full_name
+        font-weight normal
+    .desc
+      color #999
+      overflow hidden
+      text-overflow ellipsis
+      white-space nowrap !important
+
+    &.tt-cursor, &:focus, &:hover
+      background-color #7A6592
+
+      .bitrating, .desc
+        color #fff !important
+
+    &:first-child
+      border-top 0
+      border-radius 6px 6px 0 0
+    &:last-child
+      border-radius 0 0 6px 6px
+    &:first-child:last-child
+      border-radius 6px
+
+  .btn
+    margin-top 1.5em
+
+  &.role-buyer .visible-seller
+    display none
+
+  &.role-seller .visible-buyer
+    display none
+
+  .arbiter-data.error
+    font-weight bold
+
+  #contract
+    -webkit-transition all 0.2s linear
+    -moz-transition all 0.2s linear
+    -o-transition all 0.2s linear
+    transition all 0.2s linear
+    padding 15px
+    height 2.8em
+
+    &:focus, &.not-empty
+      height 9em

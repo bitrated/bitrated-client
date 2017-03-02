@@ -1,0 +1,11 @@
+extend layout
+
+block content
+  h2= notification.message
+  p This notification is sent to inform you of activity related to your Bitrated account !{ user_link(user.username) }.
+
+  p: a.btn-primary(href=notification_url) Open Notification
+
+prepend footer
+  if notification.meta && notification.meta.chaincode
+    p.tiny Chaincode: #{ notification.meta.chaincode }

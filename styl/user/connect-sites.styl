@@ -1,0 +1,52 @@
+site_icon(name, x, y)
+  // ratio between small and big image.
+  // pixel positions below are for the big image, with the small image positions being automatically calculated
+  ratio = 2.36734693878
+
+  &.{name}
+    &.big
+      &, &.grayscale:hover, .linked-account:hover &.grayscale
+        &:not(.noco)
+          background-position (- x)px (- (y + 679))px
+      &.grayscale
+        background-position (- x)px (- y)px
+
+    &.smaller
+      &, &.grayscale:hover, .linked-account:hover &.grayscale
+        &:not(.noco)
+          background-position (- floor(x/ratio))px (- floor((y + 679)/ratio))px
+      &.grayscale
+        background-position (- floor(x/ratio))px (- floor(y/ratio))px
+
+
+.connect-site
+  &.big
+    background url(../img/connect-sprite.png) no-repeat
+    width 130px
+    height 130px
+
+  &.smaller
+    background url(../img/connect-sprite-small.png) no-repeat
+    width 54px
+    height 54px
+
+
+  site_icon bitcoin-otc -7 6
+  site_icon localbitcoins 122 1
+  site_icon twitter 247 6
+  site_icon reddit 377 0
+  site_icon facebook 505 6
+  site_icon github 632 6
+  site_icon google -7 165
+  site_icon linkedin 121 165
+  site_icon coinbase 253 164
+  site_icon stackexchange 379 163
+  site_icon angellist 504 164
+  site_icon paypal 643 164
+  site_icon hackernews -7 321
+  site_icon airbnb 137 324
+  site_icon fiverr 274 326
+  site_icon bitcointalk 413 324
+  site_icon paxful 538 317
+  site_icon bitify -7 470
+  site_icon keybase 135 480

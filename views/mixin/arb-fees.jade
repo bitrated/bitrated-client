@@ -1,0 +1,31 @@
+mixin fees_type_text(label, fees, short)
+  case fees.type
+    when 'percentage'
+      | #{ fees.percentage }% #{ label } fee
+      if !short && (fees.min || fees.max)
+        | <br>
+        small.text-muted (
+          if fees.min
+            | #{ format_satoshis(fees.min) } BTC min
+          if fees.min && fees.max
+            | , 
+          if fees.max
+            | #{ format_satoshis(fees.max) } BTC max
+          | )
+
+    when 'fixed'
+      | #{ format_satoshis(fees.fixed) } BTC #{ label } fee
+
+mixin fees_text(fees, short)
+  if fees.base.type == 'none' && fees.dispute.type == 'none'
+    | Free of charge
+
+  else
+    if fees.base.type == 'none'
+      | Free if not disputed,
+    else
+      +fees_type_text((fees.dispute.type == 'none' ? 'fixed' : 'base'), fees.base, short)
+
+    if fees.dispute.type != 'none'
+      | !{short?' ':'<br>'}#{ fees.base.type != 'none' ? '+ ' : '' }
+      +fees_type_text('dispute', fees.dispute, short)

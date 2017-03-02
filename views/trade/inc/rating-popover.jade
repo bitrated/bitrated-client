@@ -1,0 +1,11 @@
+form(method='post', action='//')
+  //- :markdown
+    **Rating for #{ target } saved.**
+    
+    You may add a comment below:
+  .form-group
+    textarea.form-control(name='comment', placeholder='Additional comments (optional)', rows=3, autofocus)= comment
+
+  button.btn.btn-brand(type='submit') Update
+  = ' '
+  button.btn.btn-default(type='button', role='close') Close

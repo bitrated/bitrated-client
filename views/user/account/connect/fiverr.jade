@@ -1,0 +1,28 @@
+extend ../../layout
+
+append vars
+  - page_title = 'Link Fiverr account'
+  - include_header = true
+
+block page-header
+  h1 Link Fiverr account
+
+block content
+  .container-narrow
+    if error
+      .bs-callout.bs-callout-danger= error
+
+    .row: form.col-md-8(method='post')
+      +csrf
+
+      .form-group
+        label(for='username') Fiverr username:
+        input#username.form-control(type='text', name='username', value=fiverr_user, required, autofocus)
+
+      :markdown
+        To verify your ownership of the Fiverr account,
+        add the following text to your profile "Description" field:
+
+      pre= message
+
+      button.btn.btn-primary.btn-lg(type='submit') Authenticate

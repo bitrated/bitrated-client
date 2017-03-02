@@ -1,0 +1,25 @@
+.vouch
+  h3 Vouch for #{ user.username }
+  p Do you trust #{ user.username }? Vouch for them and help build their reputation.
+  form(action='//')
+    input(type='hidden', name='value', value=10)
+    .media.rating-item.vouching
+      .media-left
+        img(src=user_image(authenticated, 'thumb'))
+      .media-body
+        .rating-body
+          textarea.form-control(name='comment', required, maxlength=2000, placeholder="What do you think about #{user.username}? (required)")
+          //-.form-group
+            label(for='vouch-value') Relation:
+            select#vouch-value.form-control(name='value')
+              option(value=5) I know #{ user.username }
+              option(value=10, selected) I trust #{ user.username }
+              option(value=25) I would trust #{ user.username } with my life!
+
+        button.btn.btn-brand(type='submit') Vouch for #{ user.username }
+        .text-muted.notes
+          :markdown
+            By vouching for #{user.username}, you:
+            **(1)** Help improve their Bitrating trust score,
+            **(2)** Add #{user.username} to your Web of Trust network, giving more weight to their ratings, and
+            **(3)** Put your reputation on the line - every negative rating received by #{ user.username } will *affect your own trust score as well*.

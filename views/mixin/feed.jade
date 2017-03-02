@@ -1,0 +1,33 @@
+include rating
+include linked
+
+mixin feed_event(ev, opt)
+  - opt = opt || {}
+  .media.feed-item&attributes(attributes)
+    .media-left
+      a.thumb(href=user_url(ev.user))
+        img(src=user_image(ev.user, 'thumb'))
+    .media-body
+      .heading.clearfix
+        h2!= user_link(ev.user)
+          if !opt.hide_score_of || opt.hide_score_of != ev.user
+            +score(ev.user, ev.user_scores, true)
+          = ' '
+          small= ev.message
+        != reltime(ev.timestamp)
+
+      block
+
+mixin feed_event_linked(ev, opt)
+  +feed_event(ev, opt)
+    +linked_account(ev.meta.account)
+
+mixin feed(user, events)
+  .feed
+    for ev in events
+      if ev.type == 'rated'
+        +rating(ev.meta.rating, { rater_scores: ev.user_scores, hide_score_of: user.username })
+      else if ev.type == 'linked'
+        +feed_event_linked(ev, { hide_score_of: user.username })
+      else
+        +feed_event(ev, { hide_score_of: user.username })

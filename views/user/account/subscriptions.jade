@@ -1,0 +1,27 @@
+extend ../layout
+
+append vars
+  - page_title = 'Email subscriptions'
+  - include_header = true
+
+append css
+  +css('user/settings.css')
+
+block page-header
+  h1 Manage email subscriptions #[small for #{ user.username }]
+
+block content
+  .container-narrow
+    form(method='post', action='/subscriptions')
+      +csrf
+      if success
+        .bs-callout.bs-callout-info
+          | Email subscription preferences saved.
+
+      input(type='hidden', name='token', value=token)
+      .panel.panel-default
+        .panel-heading: .panel-title I wish to receive emails for:
+        .panel-body
+          include inc/email-lists
+
+      button.btn.btn-primary.btn-lg(type='submit') Save

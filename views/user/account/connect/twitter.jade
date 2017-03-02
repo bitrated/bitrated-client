@@ -1,0 +1,27 @@
+extend ../../layout
+
+append vars
+  - page_title = 'Link Twitter account'
+  - include_header = true
+  - bundle = 'user/connect/twitter'
+  - await_js = true
+
+block page-header
+  h1 Link Twitter account
+
+append css
+  +css('user/connect/twitter.css')
+
+block content
+  .container-narrow.connect-twitter
+    if error
+      .bs-callout.bs-callout-danger= error
+
+    .row: form.col-md-9(method='post', data-action='share')
+      .form-group
+        label(for='username') Your Twitter username:
+        input#username.form-control(type='text', name='username', value=twitter_username, required, autofocus)
+
+      p To prove you control this Twitter account, you need to send a verification tweet:
+
+      button.btn.btn-primary.btn-lg.ladda-button(type='submit', data-style='expand-left') Send verification Tweet

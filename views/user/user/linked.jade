@@ -1,0 +1,20 @@
+extend layout
+include ../mixin/linked
+
+append vars
+  - page_title = 'Linked accounts'
+  - active_user_menu = 'linked'
+
+block user-content
+  h4.tab-title Linked accounts
+
+  if linked.length
+    +linked_accounts(linked)
+  else
+    p #{ user.username } has no linked accounts.
+
+  if authenticated == user.username
+    .controls
+      a.btn.btn-brand(href='/connect') Link more accounts &#8250;
+      =' '
+      a.btn.btn-default(href=url+'/linked/unlink') Unlink accounts &#8250;

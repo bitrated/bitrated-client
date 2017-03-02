@@ -1,0 +1,40 @@
+mixin linked_account(account, opt)
+  - opt = opt || {}
+  - profile = account.profile
+  - metrics = account.metrics
+  - provider = connect_providers[account.provider] || {}
+  - display_metric = provider.display_metric || provider.primary_metric
+
+    a.linked-account(href=opt.url||profile.profileUrl, rel='nofollow', target='_blank', data-toggle='tooltip', title=opt.tooltip)
+      .connect-site.smaller.grayscale(class=account.provider, class=opt.icon_class)
+      .body
+        h5
+          = provider.label
+          if opt.custom_controls
+            block
+          else
+            if provider.format_fn
+              = ' '
+              span.badge= provider.format_fn.call(metrics, metrics)
+            else if metrics && (metrics[display_metric] != null)
+              - metric_val = metrics[display_metric]
+              = ' '
+              span.badge
+                if provider.metric_format
+                  = provider.metric_format.replace('%s', metric_val)
+                else
+                  | #{ metric_val } #{ display_metric }
+        p.acc-name
+          strong= profile.username
+          if profile.displayName && profile.displayName != profile.username
+            |  (#{ profile.displayName })
+
+        if profile.created_at
+          p.text-muted Created !{ reltime(profile.created_at) }
+
+mixin linked_accounts(linked, opt)
+  - opt = opt || {}
+  ul.row.linked-accounts
+    for account in linked
+      li(class=opt.fullwidth?'col-xs-12':'col-md-4 col-sm-6')
+        +linked_account(account, opt)

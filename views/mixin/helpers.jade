@@ -1,0 +1,8 @@
+mixin css(path)
+  link(rel='stylesheet', href=static_url+'/'+path)&attributes(attributes)
+
+mixin js(path)
+  script(src=static_url+'/'+path, crossorigin)&attributes(attributes)
+
+mixin csrf
+  input(type='hidden', name='_csrf', value=csrf_token)

@@ -1,0 +1,19 @@
+.form-group.email-lists: .row
+  .col-md-4
+    label.checkbox-inline
+      input(type='checkbox', name='email_lists', value='transactional',
+        checked=!!~user.email_lists.indexOf('transactional'))
+      |  Activity
+      p.text-muted Notifications for trades, payments, ratings, etc.
+  .col-md-4
+    label.checkbox-inline
+      input(type='checkbox', name='email_lists', value='newsletter',
+        checked=!!~user.email_lists.indexOf('newsletter'))
+      |  Updates
+      p.text-muted Mailing list for announcements and updates.
+  .col-md-4
+    label.checkbox-inline
+      input(type='checkbox', name='email_lists', value='security',
+        checked=!!~user.email_lists.indexOf('security'))
+      |  Security
+      p.text-muted Updates regarding security breaches and on-going attacks.

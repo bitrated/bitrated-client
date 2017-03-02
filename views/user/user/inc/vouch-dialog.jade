@@ -1,0 +1,20 @@
+#get-vouched.modal.fade: .modal-dialog: .modal-content
+  .modal-header
+    button.close(type='button', data-dismiss='modal', aria-hidden='true') &times;
+
+  - vouch_url = user_url(authenticated) + '/vouch'
+  - share_msg = 'Trust me? Vouch for me on Bitrated and help build my reputation! ' + vouch_url
+  - twitter_url = 'https://twitter.com/intent/tweet?text='+encodeURIComponent(share_msg.replace('Bitrated', '@Bitrated'))
+  - facebook_url = 'https://www.facebook.com/dialog/share?app_id=727691027287815&href='+encodeURIComponent(vouch_url)+'&redirect_uri='+encodeURIComponent(user_url(authenticated))
+
+  .modal-body
+    :markdown
+      ## Get vouched and build your reputation!
+
+      You can share the following link to have others who trust you vouch for your credibility and help build your reputation on Bitrated:
+
+      <div class="share-url">[#{ vouch_url }](#{ vouch_url })</div>
+
+    a.btn.btn-brand.btn-lg(href=twitter_url, target='_blank') Share on Twitter
+    = ' '
+    a.btn.btn-default.btn-lg(href=facebook_url, target='_blank') Share on Facebook

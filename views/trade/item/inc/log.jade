@@ -1,0 +1,25 @@
+- msg_dialogs = []
+
+ul
+  for log in trade.logs.slice().reverse()
+    li
+      img(src=user_image(log.user, 'thumb'), alt=log.user)
+      p !{ user_link(log.user) } #{ log.text }
+      p #[small!= reltime(log.created_at)]
+        if log.meta && log.meta.message
+          - log_msg_id = 'logmsg-' + log.id
+          - msg_dialogs.push([log_msg_id, log])
+          |  &middot; #[button.btn.btn-link.btn-xs(data-toggle='modal', data-target='#'+log_msg_id) show message]
+        if log.meta && log.meta.ntxid
+          |  &middot; #[button.btn.btn-link.btn-xs(data-ntxid=log.meta.ntxid) show tx]
+        if log.action == 'paid'
+          |  &middot; #[a.btn.btn-link.btn-xs(href=address_link(), target='_blank') info]
+
+for dialog in msg_dialogs
+  - log_msg_id=dialog[0]
+  - log = dialog[1]
+  .modal.fade(role='dialog', id=log_msg_id): .modal-dialog: .modal-content
+    .modal-header: h4.modal-title #{ log.user } #{ log.text } #[small!= reltime(log.created_at)]
+    .modal-body: blockquote.user-text!= markdown(log.meta.message)
+    .modal-footer: button.btn.btn-primary(type='button', data-dismiss='modal') Close
+

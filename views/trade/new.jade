@@ -1,0 +1,80 @@
+extend layout
+
+append vars
+  - page_title = 'New trade'
+  - active_menu = '/trade'
+  - req_modern_browser = true
+  - bundle = 'trade/new'
+  - include_header = true
+  - prefetch.push('trade/noop.js')
+
+prepend css
+  +css('lib/sui/step.min.css')
+  +css('lib/typeaheadjs.css')
+append css
+  +css('trade.css')
+  +css('trade/new.css')
+    
+block page-header
+  .trade-header.clearfix
+    h1.desc New Trade
+    include inc/steps
+
+block content
+  - (data.role && data.role=='seller') || (data.role = 'buyer')
+  - (data.currency && data.currency=='BTC-TEST') || (data.currency = 'BTC')
+
+  form.new-trade(class="role-#{data.role}", action='//', method='post', disabled)
+    .row
+      input(type='hidden', name='role', value=data.role)
+      //- .form-group.col-md-3.col-sm-4
+        label(for='role') I am...
+        select#role.form-control.input-lg(name='role')
+          option(value='buyer', selected=data.role=='buyer') Buying
+          option(value='seller', selected=data.role=='seller') Selling
+
+      .form-group.col-md-12
+        label(for='description') I am #[span.visible-buyer buying] #[span.visible-seller selling]...
+        input#description.form-control.input-lg(type='text', name='description', required, autofocus, maxlength=100,
+              placeholder='A few words to describe the product/service', value=data.description)
+
+    .row
+      .form-group.col-md-6
+        label(for='other-user') #[span.visible-buyer From] #[span.visible-seller To]
+        input#other-user.form-control.input-lg(type='text', name='other_user', required,
+          placeholder='Username or email', value=data[data.role=='buyer'?'seller':'buyer'])
+        p.help-block You can use an unregistered email address (we'll send an invitation).
+      .form-group.col-md-6
+        label(for='amount') For
+        .input-group
+          input#amount.form-control.input-lg(type='text', name='amount', required, placeholder='Price for trade',
+            pattern='\\d+(\\.\\d{1,8})?', value=data.amount)
+          .input-group-addon= data.currency
+          input(type='hidden', name='currency', value=data.currency)
+          //- select(name='currency')
+            for currency in currencies
+              option(selected=data.currency==currency)= currency
+        p.help-block Arbitration fees will be deducted from the total amount.
+
+    .row
+      .form-group.col-md-6
+        label(for='arbiter') Trust agent
+        input#arbiter.form-control.input-lg(type='text', name='arbiter', required, placeholder='Username', value=data.arbiter || data.agent)
+        p.help-block The trust agent resolves disputes and can refund payments.
+        .arbiter-data
+      .form-group.col-md-6
+        label(for='payment-address')
+          span.visible-buyer Refund address
+          span.visible-seller Payout address
+        input#payment-address.form-control.input-lg(type='text', name='payment_address', required, placeholder='Your address for receiving payments')
+        include inc/set-default-address
+
+    .form-group
+      label(for='contract') Contract #[small (optional, but highly recommended)]
+      textarea#contract.form-control.input-lg(rows=1, name='contract', class=(data.contract != null ? 'not-empty' : null),
+            placeholder='Detailed description of the item, delivery method and other agreed upon terms.')= data.contract
+      p.help-block.
+        Provided to the trust agent in case of dispute, and should contain all the information required for the dispute resolution process.
+        Supports #[a(href='http://howtomarkdown.com/', target='_blank') Markdown formatting].
+
+    button.btn.btn-primary.btn-xxl(type='submit', disabled) Create trade

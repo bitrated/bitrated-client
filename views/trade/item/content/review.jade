@@ -1,0 +1,46 @@
+h3 You were invited to #{ perspective.role == 'arbiter' ? 'arbitrate' : 'join' } this trade
+
+if perspective.role == 'buyer'
+  - address_label = 'Your refund addresses'
+  :markdown
+    **!{ user_link(perspective.other_user) }** is offering to sell you **#{ trade.description }**
+    for **#{ format_amount(trade.amount) }**,
+    with **!{ user_link(trade.arbiter) }** as the trust agent.
+
+else if perspective.role == 'seller'
+  - address_label = 'Your payout address'
+  :markdown
+    **!{ user_link(perspective.other_user) }** is offering to buy **#{ trade.description }**
+    from you for **#{ format_amount(trade.amount) }**,
+    with **!{ user_link(trade.arbiter) }** as the trust agent.
+
+else if perspective.role == 'arbiter'
+  - address_label = 'Where should the arbitration fees be sent to?'
+  :markdown
+    **!{ user_link(trade.buyer) }** is buying **#{ trade.description }** from **!{ user_link(trade.seller) }**
+    for **#{ format_amount(trade.amount) }**,
+    and they wish to use your services as a trust agent.
+
+p The agent fees are: #{ fees_text(trade) }.
+
+if trade.contract
+  p The following contract was provided:
+  .well!= markdown(trade.contract)
+
+p Do you accept?
+
+ul.nav.nav-tabs
+  li.active: a(href='#accept', data-toggle='tab') Accept
+  li: a(href='#reject', data-toggle='tab') Reject
+.tab-content
+  #accept.tab-pane.active: form(role='accept')
+    .form-group
+      label(for='#payment-address')= address_label
+      input#payment-address.form-control(type='text', name='payment_address', required, autofocus, placeholder='Your address for receiving payments')
+      include ../../inc/set-default-address
+    button.btn.btn-primary.btn-lg(type='submit') Accept
+  #reject.tab-pane: form(role='reject')
+    .form-group
+      label.sr-only(for='#message') Rejection reason
+      textarea#message.form-control(name='message', placeholder='Reason for rejecting the trade. Optional.')
+    button.btn.btn-default.btn-lg(type='submit') Reject

@@ -1,0 +1,92 @@
+.row.hidden-xs: a.profile-img(href=user_url(user.username))
+  img(src=user_image(user.username, 'full'))
+
+if user.full_name
+  section: h4.full-name= user.full_name
+
+section: ul.props
+  if user.arbitration_fees && user.arbitration_fees.base && ~user.roles.indexOf('arbiter')
+    li.arbiter-fees
+      label Agent fees
+      = ' '
+      +fees_text(user.arbitration_fees)
+
+  if user.scores.bitrating != 0 && user.scores.position_rank
+    li #[label Rank] ranked ##{ user.scores.position_rank },
+      = ' '
+      = user.scores.percentile < 50 ? 'top ' + user.scores.percentile + '%' : 'bottom ' + Math.max(1,100-user.scores.percentile) + '%'
+
+  if user.scores.totals.reviews
+    li #[label Reviews] 
+      | #{ user.scores.totals.reviews } total, #{ user.scores.percent_positive }% positive
+
+  if user.scores.totals.vouches
+    li #[label Web of Trust] #{ user.scores.totals.vouches } total vouches
+      if wot
+        if wot.total
+          | ,<br>#{ wot.total } in your network.<br>
+          small 2nd degree: #{wot.second_degree} &bull; 3rd degree: #{wot.third_degree}</small><br>
+        else if !wot.trusts_directly
+          | ,<br>none in your network.
+
+  if wot && (wot.trusts_directly || wot.paths.length)
+    - path = wot.trusts_directly ? [] : wot.paths[0]
+    li #[label Trust path]
+      | #[a(href=user_url(path[0]||user.username)+'/vouches/by/'+encodeURIComponent(authenticated)) You] &rsaquo; 
+      for u, idx in path
+        | #[a(href=user_url(path[idx+1]||user.username)+'/vouches/by/'+encodeURIComponent(u))= u] &rsaquo; 
+      = user.username
+
+  //- if user.trade_stats && user.trade_stats.total > 0
+    li #[label Trades]
+      | #{ user.trade_stats.total } total<br>
+      small #{ user.trade_stats.completed } completed, #{ user.trade_stats.total-user.trade_stats.completed } in progress
+        if !user.trade_stats.disputed
+          | , no disputes
+      if user.trade_stats.disputed > 0
+        br
+        | #{ user.trade_stats.disputed } disputed<br>
+        small
+          if user.trade_stats.dispute_arb
+            | #{ user.trade_stats.dispute_arb } as agent, 
+          | #{ user.trade_stats.dispute_won } won, #{ user.trade_stats.dispute_lost } lost
+          if user.trade_stats.dispute_pending
+            | , #{ user.trade_stats.dispute_pending } pending
+
+  if user.tags.length
+    li #[label Tags] !{ user.tags.map(user_tag_link).join(', ') }
+
+  li #[label Joined Bitrated] !{reltime(user.created_at)}
+
+  if user.email
+    li #[label Email] #{user.email}
+
+  if user.pubkey
+    - sin_popover  = '<p><strong>Public key:</strong> <span class="break">'+user.pubkey+'</span></p>'
+    - sin_popover += '<p><strong>Encoded to SIN:</strong> <span class="break">'+user.pubkey_sin+'</span></p>'
+    - sin_popover += '<p>Please refer to <a href="security#cryptography-backed-digital-identities">our security page</a> and '
+    - sin_popover += 'to the <a href="https://en.bitcoin.it/wiki/Identity_protocol_v1">Bitcoin wiki</a> for more details.</p>'
+    //- Even with the warning, this will just cause confusion. Commenting-out for now.
+    //- - sin_popover += '<p><strong>Encoded to address:</strong> <span class="break">'+user.pubkey_address+'</span></p>'
+    //- - sin_popover += '<p><small>The address above is used for proving identity ownership, and is <strong>not meant</strong> for payments.</small></p>'
+    li.sin #[label SIN] #[span.sin-addr= user.pubkey_sin] 
+      span.glyphicon.glyphicon-info-sign(data-toggle='popover', data-html=1, data-content=sin_popover, data-placement='auto right', data-container='.profile')
+
+if user.about
+  section.aboutme.user-text!= markdown(user.about)
+
+if authenticated && authenticated != user.username
+  section
+    button.btn.btn-block.btn-primary(role='add-rating') Review #{ user.username }
+
+    if ~user.roles.indexOf('seller')
+      a.btn.btn-block.btn-default(href='/trade/new?seller='+user.username) Buy from #{ user.username }
+    if ~user.roles.indexOf('arbiter')
+      a.btn.btn-block.btn-default(href='/trade/new?agent='+user.username) Use as trust agent
+
+if linked.length && active_user_menu != 'linked'
+  section
+    h4 Linked accounts
+    +linked_accounts(linked.slice(0, 3), { fullwidth: true })
+    if linked.length > 3
+      a.btn.btn-default.btn-block(href=url+'/linked') Show all #{ linked.length } &rsaquo;

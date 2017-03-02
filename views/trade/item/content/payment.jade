@@ -1,0 +1,58 @@
+- paying = payment_due && perspective.role == 'buyer'
+
+.payment.clearfix
+  if paying
+    img.hidden-xs.qr.pull-right(src=qr_uri)
+
+  //- No payment made at all yet
+  if !balances.total
+    if perspective.role == 'buyer'
+      :markdown
+        ### Payment required
+        To complete the payment, send **#{ format_amount(payment_due) }**
+        to the multi-signature address <strong class="break">#{ trade.multisig }</strong>.
+
+        This page will be updated automatically once the payment arrives.
+    else 
+      :markdown
+        ### Awaiting payment
+        The buyer, !{ user_link(trade.buyer) }, has not made the payment yet.
+        You'll be notified once the payment arrives.
+
+  //- A partial payment was made
+  if balances.total && payment_due
+    :markdown
+      ### Payment partially sent
+      The multi-signature has a total balance of **#{ format_amount(balances.total) }**,
+      but the trade price is **#{ format_amount(trade.amount) }**.
+
+    if perspective.role == 'buyer'
+      :markdown
+        To complete the payment, send the remaining **#{ format_amount(payment_due) }**
+        to the multi-signature address <strong class="break">#{ trade.multisig }</strong>.
+
+        This page will be updated automatically once the payment arrives.
+    else
+      :markdown
+        The buyer has to send the remaining **#{ format_amount(payment_due) }**.
+        You'll be notified once the payment is completed.
+
+  //- Still confirming
+  if balances.total >= trade.amount && balances.confirmed < trade.amount
+    if !balances.confirmed
+      - confirming_text = 'but it is'
+    else
+      - confirming_text = 'out of which <strong>' + format_amount(balances.unconfirmed) + '</strong> are'
+    :markdown
+      ### Awaiting payment confirmation
+      The multi-signature address <strong class="break">#{ trade.multisig }</strong>
+      has a total balance of **#{ format_amount(balances.total) }**,
+      !{ confirming_text } still waiting to be confirmed.
+
+      You will be notified once the payment receives one confirmation.
+  if paying
+    .payment-button
+      a(href=payment_uri).btn.btn-primary.btn-xl Pay with Bitcoin
+      = ' '
+      span.text-muted (or scan the QR code)
+      img.visible-xs.qr(src=qr_uri)

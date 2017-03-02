@@ -1,0 +1,16 @@
+extend layout
+
+append vars
+  - page_title = user.username + '\'s WoT'
+  - bundle = 'user/wot'
+
+append css
+  +css('user/wot.css')
+
+append scripts
+  +js('lib/sigma/sigma.min.js')
+  +js('lib/sigma/plugins/sigma.parsers.json.min.js')
+
+block user-content
+  h1 Your Web of Trust relation to <em>#{ user.username }</em>
+  #wot-graph(data-wot-uri="/#{ user.username }/wot.json")

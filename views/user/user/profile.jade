@@ -1,0 +1,32 @@
+extend layout
+
+include ../mixin/pager
+include ../mixin/feed
+
+append vars
+  - page_title = page_title_suffix + ' · ratings & reputation at Bitrated'
+  - page_title_suffix = null
+  - active_user_menu = 'activity'
+  - meta_desc = ''
+  if user.title
+    - meta_desc += user.title + (user.title.slice(-1) != '.' ? '.' : '') + ' '
+  - meta_desc += user.username + ' at Bitrated - the trust platform for the cryptocurrency economy. Buyer protection, smart contracts and reputation management.'
+  - meta_image = large_meta_image
+  - display_welcome = !hide_welcome && authenticated == user.username && ((page == 1 && events.length == 1) || Date.now()-user.created_at<36000000)
+  // - display_welcome = true
+
+append css
+  if display_welcome
+    +css('user/welcome.css')
+
+block user-content
+  if display_welcome
+    include inc/welcome
+
+  h4.tab-title Activity feed
+  +feed(user, events)
+
+  +pager(page, pages)
+
+  if wot && !wot.trusts_directly
+    include inc/vouch

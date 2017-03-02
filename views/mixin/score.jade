@@ -1,0 +1,28 @@
+mixin score(username, scores, show_tooltip, new_window)
+  if scores
+    if scores.bitrating < 0
+      if scores.bitrating > -1000
+        - str = ''+scores.bitrating
+      else if scores.bitrating > -1000000
+        - str = ''+Math.floor(scores.bitrating/1000)+'k'
+      else
+        - str = ''+Math.round(scores.bitrating/1000000)+'m'
+    else
+      if scores.bitrating < 1000
+        - str = ''+scores.bitrating
+      else if scores.bitrating < 10000
+        - str = (scores.bitrating/1000).toFixed(1).replace(/\.0+$/,'')+'k'
+      else if scores.bitrating < 1000000
+        - str = Math.round(scores.bitrating / 1000)+'k'
+      else if scores.bitrating < 10000000
+        - str = (scores.bitrating/1000000).toFixed(1).replace(/\.0+$/,'')+'m'
+      else if scores.bitrating < 1000000000
+        - str = Math.round(scores.bitrating/1000000)+'m'
+      else
+        //- this should never actually happen
+        - str = 'GODLIKE!'
+
+    - tooltip_attrs = show_tooltip ? { 'data-username': username, 'data-bitrating-scores': scores } : {}
+
+    a.bitrating(href=user_url(username), target=(new_window&&'_blank'), class='bitrank-'+scores.bitrank+' c'+Math.min(4,str.length))&attributes(tooltip_attrs)
+      span= str

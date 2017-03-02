@@ -1,0 +1,179 @@
+@import 'rating/dialog'
+
+.trade-header
+  .desc
+    float left
+    margin 0 20px 0 0
+
+  .steps
+    float right
+    margin-top 23px
+
+  h4
+    margin-bottom 0
+
+  @media only screen and (max-width: 991px)
+    .desc
+      float none
+      margin-right 0
+    .steps
+      margin-top 20px
+      float none
+
+  @media only screen and (max-width: 767px)
+    .steps
+      display none
+
+.trade-body
+  padding 30px
+  margin-bottom 20px
+  background #fff
+  border 1px solid #EDEDED
+  border-radius 5px
+  -webkit-border-radius 5px
+  -moz-border-radius 5px
+
+.trade-content
+  h3
+    margin 0 0 30px 0
+  .nav-tabs
+    margin-bottom 15px
+  .well p:last-child
+    margin-bottom 0
+
+.trade-sidebar
+  > h4
+    font-size 18px
+    margin 20px 0
+    text-transform uppercase
+
+  > h4:first-child
+    margin-top 0
+
+  .bitrating
+    font-size 16px
+
+  ul.props
+    > li
+      padding-bottom 5px
+      margin-bottom 10px
+      border-color #e6e6e6
+      // > a
+      //   font-weight normal
+    .glyphicon-envelope
+      line-height inherit
+      opacity 0.4
+      vertical-align text-bottom
+
+  .popover
+    font-weight normal
+
+  .rate
+    margin 3px 0
+    ul
+      float right
+
+.rate
+  ul
+    list-style-type none
+    padding-left 0
+  li
+    display inline-block
+    margin-left 10px
+    cursor pointer
+
+    // &.syncing
+    //  -webkit-animation spinsmiley 1s linear infinite
+    //  -moz-animation spinsmiley 1s linear infinite
+    //  animation spinsmiley 1s linear infinite
+
+  .popover
+    width 280px
+
+  .btn, .ladda-button, .ladda-button .ladda-label, .ladda-button .ladda-spinner
+    transition  all 0.2s ease !important
+    -webkit-transition all 0.2s ease !important
+
+  .ladda-button[data-style=expand-left][data-loading]
+    padding-left 35px
+  .ladda-button[data-style=expand-left] .ladda-spinner
+    left 2px
+  .ladda-button.indicator
+    padding-left 35px
+    .glyphicon
+      display block
+      left 10px
+  .glyphicon
+    display none
+
+/*@keyframes spinsmiley
+  100%
+    -webkit-transform rotate(360deg)
+    -moz-transform rotate(360deg)
+    transform rotate(360deg)*/
+
+.dialog-reviews
+  margin 30px 0
+  text-align center
+
+  > ul
+    text-align left
+    background #f3f3f3
+    margin 0
+    padding 15px
+    border 1px solid #E6E6E6
+    border-radius 5px
+    display inline-block
+    list-style-type none
+
+    > li
+      padding 0 0 10px
+      margin 0 0 10px
+      line-height 1
+      border-bottom 1px solid #e6e6e6
+      &:last-child
+        border-bottom 0
+        padding-bottom 0
+        margin-bottom 0
+  label
+    min-width 7em
+    margin-right 0.5em
+    vertical-align super
+    font-weight normal
+  .rate
+    display inline-block
+
+.add-ratings
+  dt
+    text-transform capitalize
+  dd
+    .rated-icon
+      display none
+    &.rated
+      .rated-icon
+        display inline
+
+.trade-log
+  ul
+    list-style-type none
+    padding 0
+  time
+    color #b0b0b0
+    border none
+  li
+    margin-bottom 10px
+  img
+    float left
+    margin 0 5px 10px 0
+    width 35px
+    height 35px
+  p
+    margin-bottom 0
+  .btn-link
+    padding 1px 0
+
+.trade-log, .trade-content
+  blockquote
+    padding 5px 10px
+    margin 0.5em 0
+    font-size 14px

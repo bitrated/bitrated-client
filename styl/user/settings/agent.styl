@@ -1,0 +1,16 @@
+.fees-structure
+  .fees-kind
+    margin-bottom 1.5em
+
+  select.form-control
+    width 14em
+
+  .input-group input[name=percentage]
+    width 5em !important
+
+.fees-type
+  display none
+
+for type in percentage fixed none
+  .fees-active-{type} .fees-type-{ type }
+    display inline

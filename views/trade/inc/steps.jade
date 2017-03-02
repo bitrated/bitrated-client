@@ -1,0 +1,15 @@
+if !trade || trade.status != 'rejected'
+
+  - current_step = !trade ? 1 : ({ 'new': 2, rejected: 2, accepted: 3, paid: 4, released: 4 })[trade.status]
+
+  mixin trade_step(num, label)
+    - klass = current_step == num ? 'active' : 'disabled'
+    .step(class=klass)
+      .content
+        = label
+
+  .ui.ordered.steps
+    +trade_step(1, 'Details')
+    +trade_step(2, 'Approval')
+    +trade_step(3, 'Payment')
+    +trade_step(4, 'Release')

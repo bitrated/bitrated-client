@@ -1,0 +1,36 @@
+block vars
+  - title = 'Transaction info'
+
+.modal.fade.tx-dialog: .modal-dialog: .modal-content
+  .modal-header
+    button.close(type='button', data-dismiss='modal', aria-hidden='true') &times;
+    h4.modal-title= title
+  
+  .modal-body
+    block body
+      table.table
+        thead: tr
+          th Pay to
+          th Amount
+        tbody
+          each r in recipients
+            tr
+              td
+                if r.label
+                  = r.label + ' '
+                  small.text-muted (#{ r.address })
+                else
+                  = r.address
+              td= format_amount(r.amount)
+        tfoot
+          tr
+            th Miner fee:
+            td= format_amount(tx_fees)
+          tr
+            th Total:
+            td= format_amount(total_in)
+
+  .modal-footer
+    if txinfo_url
+      a.btn(href=txinfo_url, target='_blank') View in block explorer
+    button.btn.btn-default(type='button', data-dismiss='modal') Close

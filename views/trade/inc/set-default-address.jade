@@ -1,0 +1,5 @@
+.help-block
+  label #[input(type='checkbox', name='set_address_as_default')] Set as my default address for future trades
+  = ' '
+  - address_popover = 'To protect your privacy, we recommend to avoid re-using addresses. If possible, provide a new address each time.'
+  span.glyphicon.glyphicon-exclamation-sign(data-toggle='popover', data-content=address_popover, data-placement='top')

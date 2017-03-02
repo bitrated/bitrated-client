@@ -1,0 +1,103 @@
+extend ../layout
+
+append vars
+  - page_title = 'Account settings'
+  - active_account_menu = '/settings'
+  - await_js = true
+  - bundle = 'user/settings'
+  - include_header = true
+
+append css
+  +css('user/settings.css')
+
+block page-header
+  h1 Account settings
+
+block account-content
+  .container-narrow
+    form(action='//')
+      .panel.panel-default
+        .panel-heading: .panel-title Basic profile
+        .panel-body
+          .form-group
+            label(for='email') Email
+            input#email.form-control.input-lg(type='email', name='email', value=user.email, required, placeholder='user@mydomain.com')
+          .form-group
+            label(for='full-name') Full name
+            input#full-name.form-control.input-lg(type='text', name='full_name', value=user.full_name, placeholder='(Optional)', maxlength=25)
+          .form-group
+            label(for='title') Title
+            input#title.form-control.input-lg(type='text', name='title', value=user.title, placeholder='A few words to describe yourself. (Optional)', maxlength=80)
+          .form-group
+            label(for='about') About me
+            textarea#about.form-control.input-lg(name='about', rows=5, maxlength=10000, placeholder='More detailed text about yourself. (Optional)')= user.about
+            p.help-block Supports #[a(href='http://howtomarkdown.com/', target='_blank') Markdown formatting].
+          .form-group
+            label(for='tags') Tags
+            input#tags.form-control.input-lg(name='tags', placeholder='Comma-separated list of tags. (Optional)', value=(user.tags||[]).join(', '))
+            p.help-block Your skills, areas of expertise, languages, location and any other keywords to help others find your profile.
+
+      .panel.panel-default.profile-image
+        .panel-heading: .panel-title Profile image
+        .panel-body.clearfix
+          img(src=user_image(user.username, 'thumb'))
+          .form-group
+            input(type='file', name='image')
+            p.text-help Recommended size: 230x230 pixels.
+            a(role='delete-image', href='#') Remove image
+
+      .panel.panel-default
+        .panel-heading: .panel-title I'm here to:
+        .panel-body
+          .form-group
+            label.checkbox-inline
+              input(type='checkbox', name='roles', value='buyer', checked=!!~user.roles.indexOf('buyer'))
+              |  Buy
+            label.checkbox-inline
+              input(type='checkbox', name='roles', value='seller', checked=!!~user.roles.indexOf('seller'))
+              |  Sell
+            label.checkbox-inline
+              input(type='checkbox', name='roles', value='arbiter', checked=!!~user.roles.indexOf('arbiter'))
+              |  Provide arbitration
+          p.help-block Make sure to configure your #[a(href='/settings/agent') arbitration fees] if you wish to offer arbitration services.
+
+      .panel.panel-default#addresses
+        .panel-heading: .panel-title Payment addresses
+        .panel-body
+          p.help-block Set default payment addresses for your future trades.
+            | Please note that re-using addresses puts your privacy at risk.
+            | If possible, we strongly recommend using unique addresses for each trade.
+          - user.default_addresses || (user.default_addresses = {})
+          for currency in currencies
+            .form-group
+              label(for='address-'+currency) #{ currency }
+              input.form-control(id='address-'+currency, name="default_addresses.#{currency}", value=user.default_addresses[currency])
+
+      .panel.panel-default
+        .panel-heading: .panel-title Privacy settings
+        .panel-body
+          .form-group: label.checkbox-inline
+            input(type='hidden', name='_set_show_trade_stats', value='1')
+            input(type='checkbox', name='privacy.show_trade_stats', value='1', checked=user.privacy.show_trade_stats)
+            |  Display aggregated trade stats
+          .form-group: label.checkbox-inline
+            input(type='hidden', name='_set_show_email_in_trade', value='1')
+            input(type='checkbox', name='privacy.show_email_in_trade', value='1', checked=user.privacy.show_email_in_trade)
+            |  Display my email address to users I trade with
+          .form-group: label.checkbox-inline
+            input(type='hidden', name='_set_show_email', value='1')
+            input(type='checkbox', name='privacy.show_email', value='1', checked=user.privacy.show_email)
+            |  Display my email address publicily
+          //-.form-group: label.checkbox-inline
+            input(type='hidden', name='_set_show_trade_amounts', value='1')
+            input(type='checkbox', name='privacy.show_trade_amounts', value='1', checked=user.privacy.show_trade_amounts)
+            |  Display trade amounts 
+            select(name='privacy.trade_amounts_full')
+              option(value=1) with exact numbers
+              option(value=0) in estimated form
+      .panel.panel-default
+        .panel-heading: .panel-title I wish to receive emails for:
+        .panel-body
+          include ../inc/email-lists
+
+      button.btn.btn-primary.btn-lg(type='submit') Save settings

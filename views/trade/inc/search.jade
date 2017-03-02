@@ -1,0 +1,20 @@
+form.form-inline.search(method='get', action='trade')
+  .form-group
+    label.sr-only(for='actor') Type
+    select.form-control#actor(name='role')
+      option(value='') All types
+      each label, role in {buyer: 'Buying', seller: 'Selling', arbiter: 'Trust agent'}
+        option(value=role, selected=role==search.role)= label
+  = ' '
+  .form-group
+    label.sr-only(for='status') Status
+    select.form-control#status(name='status')
+      option(value='') All statuses
+      each label, status in status_labels
+        option(value=status, selected=status==search.status)= label
+  = ' '
+  .form-group
+    label.sr-only(for='q') Free text search
+    input.form-control#q(type='text', name='q', placeholder='Description / User', value=search.q)
+  = ' '
+  button.btn.btn-default(type='submit') Search

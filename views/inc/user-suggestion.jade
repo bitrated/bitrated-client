@@ -1,0 +1,11 @@
+include ../mixin/score
+
+.score(class=title&&'has-desc'): +score(username, scores, true, true)
+
+p.title #{ username }
+  if full_name
+    = ' '
+    span.full_name (#{ full_name })
+
+if title
+  p.desc= title

@@ -1,0 +1,94 @@
+extend layout
+
+append vars
+  - page_title = 'Link accounts'
+  - active_account_menu = '/connect'
+  - include_header = true
+
+append css
+  +css('user/connect.css')
+
+block page-header
+  h1 Link your accounts
+  p Link your Bitrated account to your online presence and build your reputation.
+
+mixin connect_provider(name)
+  - opts = providers[name]
+  a(href='/connect/'+name+(opts.is_oauth?'?_csrf='+csrf_token:''))
+    .connect-site.big(class=name)
+    p
+      if linked[name]
+        span.check.glyphicon.glyphicon-ok
+      = opts.label
+
+block account-content
+  if linked_now
+    .bs-callout.bs-callout-info
+      :markdown
+        Your **#{ linked_now }** account was linked successfully.
+        The new account metrics will be reflected in your Bitrating score shortly.
+
+  if error
+    .bs-callout.bs-callout-danger= error
+
+  :markdown
+    By linking your Bitrated account to your other online accounts,
+    you can help verify your identity and
+    establish your trustworthiness to other users.
+
+    The Bitrated reputation engine will also examine various metrics from your accounts
+    (such as the number of Twitter followers, GitHub stars, Reddit karma, etc)
+    and increase your Bitrating score based on them.
+
+  hr
+
+  h2 Bitcoin services
+  .link-list.clearfix
+    +connect_provider('coinbase')
+    +connect_provider('localbitcoins')
+    +connect_provider('bitcointalk')
+    +connect_provider('bitcoin-otc')
+    +connect_provider('paxful')
+    +connect_provider('bitify')
+
+  hr
+
+  h2 Social networks
+  .link-list.clearfix
+    +connect_provider('twitter')
+    +connect_provider('reddit')
+    +connect_provider('facebook')
+    +connect_provider('hackernews')
+    +connect_provider('google')
+
+  hr
+
+  h2 Professional
+  .link-list.clearfix
+    +connect_provider('linkedin')
+    +connect_provider('github')
+    +connect_provider('stackexchange')
+    +connect_provider('angellist')
+
+  hr
+
+  h2 Miscellaneous
+  .link-list.clearfix
+    +connect_provider('keybase')
+    +connect_provider('paypal')
+    +connect_provider('fiverr')
+    +connect_provider('airbnb')
+
+  hr
+
+  .controls
+    a.btn.btn-brand(href=user_url(authenticated)+'/linked') View accounts &#8250;
+    =' '
+    a.btn.btn-default(href=user_url(authenticated)+'/linked/unlink') Unlink accounts &#8250;
+
+  .help-block: :markdown
+    **Privacy information:**
+    By linking an account, the following account information will be made public on your Bitrated profile:
+    username, full name, creation time, account metrics and URL
+    (all of which are generally already considered public information).
+    You can view an example of how linked accounts looks [here](/nadav/linked).

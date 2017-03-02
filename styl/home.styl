@@ -1,0 +1,290 @@
+body
+  background #fff
+  > .content
+    padding-bottom 0
+
+nav.navbar
+  margin-bottom 0
+
+.page-header
+  padding 100px 0
+  margin-bottom 0
+  background #7A6592
+  border-bottom 1px solid #7d6b95
+  color #fff
+
+  h1
+    margin 0 0 100px
+    color #fff
+    text-transform uppercase
+    text-align center
+
+  .tag
+    font-size 35px
+    font-weight 200
+    color #e2dfe8
+    margin-bottom 70px
+
+    @media (max-width:1199px)
+      margin-bottom 35px
+    @media (max-width:991px)
+      font-size 26px
+      margin-bottom 15px
+    @media (max-width:767px)
+      font-size 30px
+      margin-bottom 45px
+    @media (max-width:410px)
+      font-size 23px
+
+  .btn.mobi
+    display none
+
+  @media (max-width:767px)
+    padding 50px 0
+    text-align center
+    h1
+      font-size 36px
+      margin-bottom 30px
+    .btn
+      display none
+    .btn.mobi
+      display inline-block
+      margin-top 45px
+
+  @media (max-width:425px)
+    .btn.mobi
+      display block
+
+  .vid
+    border-radius 5px
+    border 1px solid #46345c
+    background-color #624c7d
+    margin 0 auto
+    cursor pointer
+
+    &.playing
+      background-color #7A6592
+      border-color @background-color
+
+      .inner
+        background none
+
+    @media (max-width:767px)
+      max-width 400px
+
+    .inner
+      // 16:9
+      position relative
+      padding-bottom 56.25%
+      height 0
+      background url(img/video.png) no-repeat center center
+      border-radius 5px
+      background-size cover
+      opacity 0.7
+      transition opacity 0.5s ease
+      -webkit-transition opacity 0.5s ease
+
+    .play
+      position absolute
+      width 149px
+      height 166px
+      background transparent url(img/home-sprite.png) no-repeat -44px -444px
+      top 50%
+      left 50%
+      margin-top -(@height/2)
+      margin-left -(@width/2)
+
+      @media (max-width:991px)
+        width 119px
+        height 133px
+        background-position -222px -459px
+        margin-top -66.5px // -(@height/2)
+        margin-left -59.5px // -(@width/2)
+
+    iframe
+      position absolute
+      border-radius 5px
+      top 0
+      left 0
+      width 100%
+      height 100%
+
+    &:hover .inner, &.playing .inner
+      opacity 1
+
+.features
+  padding 70px 0
+  background #fff
+  border-bottom 1px solid #eaeaea
+  text-align center
+
+  .row > div
+    padding 0 10px
+  h3
+    margin-top 10px
+    color #404040
+  .icon
+    background url(img/home-sprite.png)
+    margin auto
+    width 128px
+    height 128px
+  .rep
+    background-position -393.5px 0px
+  .multisig
+    background-position -3.5px -7px
+  .marketplace
+    background-position -191px -4px
+  .text p
+    color #8b8b8b
+    font-size 17px
+  p
+    margin-bottom 0
+  
+  @media (min-width:401px) and (max-width:991px)
+    .icon
+      float left
+      margin-bottom 15px
+    h3
+      margin 5px 0
+    .text
+      text-align left
+      margin-left 138px
+    .multisig
+      background-position -10px -7px
+    .row > div:last-child .icon
+      margin-bottom 0
+
+  @media (max-width:400px)
+    .text
+      margin-bottom 25px
+
+// Get Firefox to fit features description in 3 lines
+@-moz-document url-prefix()
+  // ^ CSS hack to target firefox
+  .features .row > div
+    padding 0 5px
+    &:first-child
+      padding-left 0
+    &:last-child
+      padding-right 0
+    p
+      letter-spacing -0.1px
+// Firefox on OS X requires even smaller text
+@supports (-moz-osx-font-smoothing:auto)
+  // ^ CSS hack to target firefox on osx (works for firefox 25+ only)
+  .features .row > div p
+    letter-spacing -0.3px
+
+.highlights
+  padding 70px 0
+  background #F3F3F3
+  border-bottom 1px solid #eaeaea
+
+  h2
+    margin 0 0 30px 0
+    color #404040
+  p
+    font-size 18px
+
+  section
+    margin-bottom 54px
+    padding-bottom 54px
+    border-bottom 1px solid #eaeaea
+
+    &:last-child
+      margin-bottom 0
+      padding-bottom 0
+      border-bottom 0
+
+    .container:before
+      float left
+      background transparent url(img/home-sprite.png) no-repeat
+      width 228px
+      height 249px
+      margin-top -15px
+
+    &.consumer-protection .container:before
+      background-position 0px -160px
+    &.smart-contracts .container:before
+      background-position -229px -160px
+    &.trust-marketplace .container:before
+      background-position -458px -160px
+    &.open-data-apis .container:before
+      background-position -916px -160px
+    &.security .container:before
+      background-position -687px -160px
+
+    &:nth-child(even)
+      .container:before
+        float right
+      .text
+        margin-left 0
+        margin-right 390px
+
+  .text
+    margin-left 390px
+
+  @media (max-width:991px)
+    .text
+      margin-left 270px
+    section:nth-child(even) .text
+      margin-right 270px
+
+  @media (max-width:767px)
+    section, section:nth-child(even)
+      .container:before
+        float none
+        margin 0 auto
+      .text
+        margin 40px 0 0 0
+    h2
+      text-align center
+
+.join
+  padding 70px 0
+  background #F3F3F3
+  border-bottom 1px solid #eaeaea
+  text-align center
+
+  p
+    margin 10px 0 0
+    font-size 18px
+
+
+.featured
+  padding 50px 0 0
+  background #fff
+  text-align center
+
+  .container
+    max-width 1000px
+
+  h3
+    color #aaa
+    margin 0 0 30px
+
+  a
+    &.bitcoinmagazine img
+      margin-top 9px
+    &.ltb img
+      height 60px
+      margin-top -3px
+    &.cointelegraph img
+      height 26px
+      margin-top 13px
+    &.coindesk img
+      height 30px
+      margin-top 7px
+    &.newsbtc img
+      height 30px
+      margin-top 10px
+    &:last-child img
+      margin-right 0
+
+  img
+    vertical-align top
+    height 40px
+    margin 0 25px 25px 0
+
+body > footer
+  border-top 0

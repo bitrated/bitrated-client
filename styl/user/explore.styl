@@ -1,0 +1,204 @@
+body > .content
+  padding-bottom 0
+
+.page-header
+  text-align center
+
+  .intro
+    margin 30px 0
+
+  @media (max-width:425px)
+    .btn
+      display block
+      margin-bottom 0.5em
+
+.explore
+  h2
+    font-size 30px
+    font-weight 300
+    color #7A6592
+    margin 0 0 10px 0
+
+  .agents, .top-users
+    .slide
+      margin-top 20px
+    .btn
+      margin-bottom 10px
+      // img/arrowsmallwhite.png
+      // background-image url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAPCAYAAADHw76AAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoV2luZG93cykiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6NUUxNjk4OTgzNjk2MTFFNEI1ODZBNDY4RkJFMDcxNjciIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6NUUxNjk4OTkzNjk2MTFFNEI1ODZBNDY4RkJFMDcxNjciPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo1RTE2OTg5NjM2OTYxMUU0QjU4NkE0NjhGQkUwNzE2NyIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo1RTE2OTg5NzM2OTYxMUU0QjU4NkE0NjhGQkUwNzE2NyIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PvqCwbcAAABUSURBVHjaYvj//38gEPcDMQMyBhFf/0OADbqEDVQCpIALWQKEG6CSh9ElGKCC/6GKUCS4kO1jQHMN3D4mBhwApwRRdmB1FVZ/4PQ5zrDCGroAAQYAYkcDashpcvEAAAAASUVORK5CYII=')
+      // background-repeat no-repeat
+      // background-position center right 12px
+      // Safari <= 7 does not support long-hand background-position,
+      // resorting to pseudo-elements instead (below)
+      // see: https://bugs.webkit.org/show_bug.cgi?id=37514
+      font-size 16px
+
+      &:after
+        content ' '
+        width 6px
+        height 15px
+        margin-left 5px
+        display inline-block
+        vertical-align middle
+        background-image url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAPCAYAAADHw76AAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoV2luZG93cykiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6NUUxNjk4OTgzNjk2MTFFNEI1ODZBNDY4RkJFMDcxNjciIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6NUUxNjk4OTkzNjk2MTFFNEI1ODZBNDY4RkJFMDcxNjciPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo1RTE2OTg5NjM2OTYxMUU0QjU4NkE0NjhGQkUwNzE2NyIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo1RTE2OTg5NzM2OTYxMUU0QjU4NkE0NjhGQkUwNzE2NyIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PvqCwbcAAABUSURBVHjaYvj//38gEPcDMQMyBhFf/0OADbqEDVQCpIALWQKEG6CSh9ElGKCC/6GKUCS4kO1jQHMN3D4mBhwApwRRdmB1FVZ/4PQ5zrDCGroAAQYAYkcDashpcvEAAAAASUVORK5CYII=')
+
+  .agents
+    padding-bottom 5px
+
+  .top-users
+    padding 30px 0 5px 0
+    background #fff
+    border-top 1px solid #ECECEC
+    border-bottom 1px solid #ECECEC
+
+    .user
+      border 1px solid #EAEAEA
+
+  .user
+    padding 15px
+    width 100%
+    background #fff
+    margin-bottom 25px
+    border-radius 8px
+    -webkit-border-radius 8px
+    -moz-border-radius 8px
+
+    .thumb
+      display block
+      margin-right 15px
+      padding 10px
+      background #f3f3f3
+      border-radius 4px
+
+      img
+        width 95px
+        height 95px
+
+    .media-body
+      padding-top 1px
+
+    h3
+      max-height 1.2em
+      margin 0 0 10px
+      font-size 23px
+      white-space nowrap
+
+      a:first-child
+        float left
+        overflow hidden
+        text-overflow ellipsis
+        line-height 1.3
+        color #696969
+
+        &, &:hover, &:focus
+          text-decoration none
+        @media (max-width:767px)
+          max-width calc(100% - 47px)
+        @media (min-width:768px) and (max-width:991px)
+          max-width 125px
+        @media (min-width 992px) and (max-width:1199px)
+          max-width 235px
+        @media (min-width:1200px)
+          max-width 145px
+
+    .bitrating
+      float right
+      right -0.5em
+      font-size 18px
+
+      span
+        margin-top 2px
+
+    .user-metrics
+      margin-top 0
+
+    p
+      color #aeaeae
+      height 2.85em
+      overflow hidden
+
+      // when displayed as one column and w/o image, don't consume unused height
+      @media only screen and (max-width:450px)
+        height auto
+        max-height 2.85em
+
+    // on extra small screens, display a smaller image
+    // that floats instead of taking up a column.
+    @media (max-width:450px)
+      h3, p
+        margin-bottom 5px
+      .thumb
+        padding 5px
+        margin-right 10px
+      .thumb img
+        width 55px
+        height 55px
+
+  .carousel-control
+    width 70px
+    background none
+    &.right
+      right -70px
+    &.left
+      left -70px
+    &:before
+      content ' '
+      position absolute
+      top 50%
+      left 50%
+      width 18px
+      height 51px
+      margin-top -(@height/2)
+      margin-left -(@width/2)
+      // img/slider.png
+      background url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAzCAYAAAD/06q7AAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3wEYAzESsNOaOQAAAudJREFUWMPNmT9MFFEQh799NDRWVCSaYKPVldhpd06FHZRSaDhNKKCgsgYKCihIEKMFLXRajXTaaQmNNpJoQkVlQ0Ni4ZwZ1r27d3tzq6/Zvdl98373e3+/bKGqj4EDfpfbInJGg0VVZ4Bv9nMxAbvu+SuaL77N3QQsu0BbVecbdGceaLvQcmEPPgD3LXgB3BSRyzGLmQR+AFMW+igiD5L9eOrenQJ2GjBox4n5oyEBiMhXYMM97Kjq7BjdmQU6LrRhGug6hIi8APwMezNGd3zuM2uba4KsLLn7lqqujsGdVaDVo02KigqHQHemXQG3ROQ8SMw08B2YsNCRiCz4d1JFvedAd4ZNAPuBBu07MZfWFn0FicgFsOJCc6o6F+DOHODzrFhb9O0yl+AT0J1p59Z1VzXFTFhXTVvos4jcq3o39cnzxN1PA1sjGLTlxJRz5wkSkRNg24VWVbVVw50W4GfrtuVmWIcA1qy7RlmbfJ1zy0ktQTZm/Io6q6qdIdzpuHEI0Bk0DovMxG/dDLm0zfdiQJ0p2zwnLfRORB4Naitl/tmOLZJYA3sZdfacmLLTowmyldr3/byqtvu403arPcBa7mqf6xAisg2cZJ4u/bMTq0uooIr1Y0ZV1yvcWQdmctac2oO61ODL0ni42z3LqOod4Ivfu0Tk2TD5U411ZcWOud3yusd9eU8cj0PucH7oQot2PXCxBRE5akSQiXrviOGnXW/Y9VhEHtbJm0Zw6Bq+ROFUnUFdiS9ROFXHoUp8icKpNKQ7PfElCqeGdagnvkThVBrCnb74EoVTucePgfgShVO5Dg3ElyicShnuZOFLFE4VUfgShVODHMrGlyicSlH4EoVTKQpfonAqReFLFE4VUfgShVMpCl+icCpF4UsUTqUofInCqRSFL1E4VUThSxROpSh8icKpovQ1qDa+ROFU+WvQcVNibIAfAccu9NfXoCWaL0slnAJVPVXVTf5RUdVNVT3lfyy/AOZRZt4xJWBWAAAAAElFTkSuQmCC') no-repeat
+    &.left:before
+      background-position right
+
+  .find-user
+    background #3EB5BB
+    padding 30px 0
+    text-align center
+
+    label
+      font-size 30px
+      color #fff
+
+    .form-control
+      display inline
+      width 300px
+      height 45px
+      padding 5px
+      margin 0 10px
+      border 2px solid #7A6592
+
+    .btn
+      vertical-align top
+
+    @media only screen and (max-width:480px)
+      label, .form-control, button
+        display block
+        width 100%
+      .form-control
+        margin 10px 0
+
+  @media only screen and (max-width:1095px)
+    .carousel-control
+      width 30px
+      &.right
+        right -30px
+      &.left
+        left -30px
+    .agents, .top-users
+      .container
+        padding 0 30px
+  @media only screen and (max-width:850px)
+    .carousel-control
+      width 30px
+      &.right
+        right -30px
+      &.left
+        left -30px
+    .agents, .top-users
+      .container
+        padding 0 30px

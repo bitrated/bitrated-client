@@ -1,0 +1,54 @@
+.ratings
+  .controls
+    margin-bottom 20px
+
+    .sign-filter
+      float left
+    .sorter
+      float right
+      &.no-show
+        float none
+
+    // adjust controls size/position so they'll always fit
+
+    @media (max-width:1199px)
+      .nav a
+        padding 5px 7px
+    @media (min-width:768px) and (max-width:991px), (max-width:580px)
+      .sign-filter, .sorter
+        float none
+      .sign-filter
+        margin-bottom 5px
+      .nav li.disabled
+        // used as label
+        min-width 5em
+    @media (max-width:340px)
+      .nav li
+        font-size 13px
+
+.rating-item
+  .user-text
+    margin-bottom 10px
+    font-size 15px
+    //font-weight 600
+
+    h1
+      font-size 1.2em
+    h2
+      font-size 1.15em
+    h3, h4, h5
+      font-size 1em
+
+  .rating-icon
+    float right
+    margin-left 10px
+    
+  &.vouching
+    padding 0
+    margin-bottom 10px
+    border 0
+
+    textarea
+      margin-bottom 10px
+      height 7em
+      font-weight normal

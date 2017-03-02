@@ -1,0 +1,42 @@
+extend layout
+include ../mixin/pager
+
+append vars
+  - page_title = rating_opt.type == 'vouch' ? 'Vouches' : 'Reviews'
+  - active_user_menu = rating_opt.type
+
+block user-content
+  h4.tab-title= page_title
+
+  .ratings
+    if ratings.length || is_filtered
+      .clearfix.controls
+        if rating_opt.type == 'review'
+          ul.sign-filter.nav.nav-pills
+            li.disabled: a(disabled) Show
+            li(class=!rating_opt.sign?'active':null)
+              a(href=build_rating_url({sign:null})) All
+            li(class=rating_opt.sign=='positive'?'active':null)
+              a(href=build_rating_url({sign:'positive'})) Positive
+                if rating_opt.direction=='incoming'
+                  |  (#{ user.scores.percent_positive }%)
+            li(class=rating_opt.sign=='negative'?'active':null)
+              a(href=build_rating_url({sign:'negative'})) Negative
+
+        //-ul.nav.nav-pills.pull-left
+          li.active: a Everyone
+          li: a In my WoT
+
+        ul.sorter.nav.nav-pills(class=rating_opt.type!='review'?'no-show':null)
+          li.disabled: a(disabled) Sort by
+          li(class=rating_opt.sort=='most-reputable'?'active':null)
+            a(href=build_rating_url({sort: 'most-reputable'})) Most reputable
+          li(class=rating_opt.sort=='newest'?'active':null)
+            a(href=build_rating_url({sort: 'newest'})) Newest
+
+    include inc/rating-list
+
+  +pager(page, pages)
+
+  if rating_opt.type == 'vouch' && wot && !wot.trusts_directly
+    include inc/vouch

@@ -1,0 +1,22 @@
+include ../../mixin/rating
+
+.rating-list
+  - ropt = user ? { hide_score_of: user.username } : {}
+  for rating in ratings
+    +rating(rating, ropt)
+
+if !ratings.length
+  - word = rating_opt.type && ({review:'reviews', vouch:'vouches'})[rating_opt.type] || 'ratings'
+  if is_filtered
+    p No #{ word } found.
+  else
+    p
+      | #{ user ? user.username + (rating_opt.direction == 'incoming' ? ' has' : ' made') : 'There are')
+      | no #{ word } yet.
+      if authenticated && user && authenticated != user.username && rating_opt.type == 'review' && rating_opt.direction == 'incoming'
+        = ' '
+        a(role='add-rating') Write the first one?
+
+    if rating_opt.type == 'vouch' && user && authenticated == user.username
+      a.btn.btn-brand.btn-lg(data-toggle='modal', data-target='#get-vouched') Get vouched &#8250;
+      include vouch-dialog
