@@ -13,7 +13,7 @@ class Trade extends Model
   urlRoot: '/trade'
   @attrs 'currency', 'amount', 'description', 'contract', 'status', 'disputed', 'disputed_by',
          'buyer', 'seller', 'arbiter', 'arb_fees', 'multisig',
-         'users_info', 'outputs', 'txs', 'logs', 'meta'
+         'users_info', 'outputs', 'txs', 'logs', 'meta', 'chaincode'
 
   collections = outputs: Outputs, txs: Transactions, users_info: UsersInfo, logs: Logs
   
