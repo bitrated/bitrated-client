@@ -2,11 +2,16 @@
 
 mixin release_btn(role)
   if txs_to[role]
-    - verb = (role == 'buyer' ? 'Refunded' : 'Released')
-    button.btn.btn-xl(data-tx-to=role, disabled=true)&attributes(attributes)
-      span.glyphicon.glyphicon-ok
-      = ' '
-      | #{ verb } to #{ trade[role] }
+    if (perspective.role == 'arbiter' && txs_to[role].created_by != authenticated)
+      - verb = (role == 'buyer' ? 'Refund' : 'Release')
+      button.btn.btn-xl(data-ntxid=txs_to[role].ntxid)&attributes(attributes)
+        | #{ verb } to #{ trade[role] }
+    else
+      - verb = (role == 'buyer' ? 'Refunded' : 'Released')
+      button.btn.btn-xl(data-tx-to=role, disabled=true)&attributes(attributes)
+        span.glyphicon.glyphicon-ok
+        = ' '
+        | #{ verb } to #{ trade[role] }
   else
     - verb = (role == 'buyer' ? 'Refund' : 'Release')
     button.btn.btn-xl(data-tx-to=role)&attributes(attributes)
